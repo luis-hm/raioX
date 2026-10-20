@@ -1,0 +1,42 @@
+.toggle { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; border: 1px solid var(--border-strong); border-radius: var(--radius-control); background: var(--surface-2); }
+.toggle button { position: relative; isolation: isolate; min-width: 56px; min-height: 40px; padding: 8px 16px; border: 0; border-radius: var(--radius-control); color: var(--text-muted); background: transparent; font-size: 14px; }
+.toggle button[aria-checked="true"] { color: var(--bg); font-weight: 700; }
+.toggleHighlight { position: absolute; inset: 0; z-index: -1; border-radius: var(--radius-control); }
+.toggleLabel { position: relative; }
+.sparkline { width: 100%; max-width: 200px; min-width: 0; }
+.sparkline svg { display: block; width: 100%; height: 48px; }
+.scrubber { min-width: 0; padding-block: 16px; }
+.scrubberLabel { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 12px; color: var(--text-muted); }
+.railArea { padding: 20px 24px; }
+.rail { position: relative; height: 4px; border-radius: var(--radius-chip); background: var(--border-strong); cursor: pointer; }
+.rail::before { position: absolute; content: ""; inset: -20px 0; }
+.marker { position: absolute; width: 1px; height: 12px; top: -4px; background: var(--text-faint); pointer-events: none; }
+.cursor { position: absolute; top: -20px; left: -22px; display: grid; place-items: center; width: 44px; height: 44px; cursor: grab; border-radius: var(--radius-control); touch-action: pan-y; }
+.cursor:active { cursor: grabbing; }
+.cursor span { display: block; width: 12px; height: 24px; background: var(--accent); border: 2px solid var(--bg); border-radius: var(--radius-control); }
+.cursor[aria-disabled="true"] { cursor: default; opacity: .55; }
+.ribbons { min-width: 0; }
+.notice { margin: 0 0 16px; padding: 12px; border: 1px solid var(--warn); border-radius: var(--radius-control); color: var(--text); font-size: 14px; }
+.caption { margin: 12px 0; color: var(--text-muted); font-size: 12px; line-height: 1.6; }
+.axis { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 8px 12px; font: 11px var(--font-plex-mono), monospace; color: var(--text-muted); }
+.axis > div { display: flex; justify-content: space-between; padding-inline: 2%; }
+.ribbonList { margin: 0; padding: 0; list-style: none; }
+.ribbonRow { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: center; gap: 12px; width: 100%; min-height: 80px; padding: 8px 12px; border: 1px solid transparent; border-bottom-color: var(--border); border-radius: var(--radius-control); background: transparent; color: var(--text); text-align: left; }
+.ribbonRow:hover, .ribbonRow[aria-pressed="true"] { background: var(--surface-2); border-color: var(--border-strong); }
+.ribbonName { display: grid; gap: 4px; font: 14px var(--font-plex-mono), monospace; }
+.ribbonName small { font-size: 11px; color: var(--text-muted); }
+.ribbonBody { min-width: 0; }
+.ribbonBody svg { display: block; width: 100%; height: 44px; overflow: visible; }
+.ribbonSummary { display: block; font-size: 12px; color: var(--text-muted); }
+.pagination { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-block: 16px; font-size: 12px; }
+.detail { padding: 20px; border: 1px solid var(--border-strong); border-radius: var(--radius-card); background: var(--surface-2); }
+.predictions { display: flex; flex-wrap: wrap; gap: 12px 24px; padding: 0; margin: 12px 0; list-style: none; font-size: 14px; }
+.demoGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
+.demoSection { scroll-margin-top: 24px; margin-block: 24px; }
+@media (max-width: 639px) {
+  .axis, .ribbonRow { grid-template-columns: 44px minmax(0, 1fr); gap: 8px; padding-inline: 4px; }
+  .detail { padding: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ribbons *, .sparkline *, .toggle *, .scrubber * { animation: none !important; transition: none !important; }
+}

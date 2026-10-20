@@ -1,0 +1,37 @@
+{
+  "feature": "raiox-aplicacao",
+  "timestamp": "2026-10-20T13:43:28.826Z",
+  "gitRev": null,
+  "command": "./.venv/bin/python tests/run_tap.py",
+  "reporter": "tap",
+  "exitCode": 1,
+  "testsParsed": 67,
+  "results": {
+    "AC-001": {
+      "status": "pass",
+      "testName": "Preparação respeita os dados e divisões originais @spec:AC-001",
+      "method": "tap"
+    },
+    "AC-002": {
+      "status": "fail",
+      "testName": "Quinze classificadores reproduzem as previsões gravadas @spec:AC-002",
+      "method": "tap"
+    },
+    "AC-003": {
+      "status": "pass",
+      "testName": "Artefatos exportados preservam a inferência @spec:AC-003",
+      "method": "tap"
+    },
+    "AC-004": {
+      "status": "pass",
+      "testName": "Resultados do estudo ficam separados dos palpites da aplicação @spec:AC-004",
+      "method": "tap"
+    }
+  },
+  "principles": {
+    "P-002": {
+      "status": "pass",
+      "testName": "Segredos não ficam escritos no código @principle:P-002"
+    }
+  }
+}

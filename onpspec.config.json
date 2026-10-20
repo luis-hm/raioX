@@ -1,0 +1,24 @@
+{
+  "testCommand": "./.venv/bin/python tests/run_tap.py",
+  "reporter": "tap",
+  "testGlobs": [
+    "tests/test_*.py",
+    "tests/**/*_test.py"
+  ],
+  "ignoreGlobs": [
+    "node_modules/**",
+    ".git/**",
+    ".spec/**",
+    ".venv/**",
+    "**/__pycache__/**",
+    "dist/**",
+    "build/**",
+    "coverage/**"
+  ],
+  "srcGlobs": [
+    "core/**/*.py",
+    "treino/**/*.py",
+    "api/**/*.py",
+    "worker/**/*.py"
+  ]
+}

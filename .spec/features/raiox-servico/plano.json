@@ -1,0 +1,92 @@
+{
+  "runId": "raiox-raiox-servico-mvg69ujp",
+  "feature": "raiox-servico",
+  "agent": "codex",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-20 04:17",
+  "branchTrabalho": "spec/raiox-servico",
+  "baseDir": ".spec/features/raiox-servico",
+  "specDir": ".spec",
+  "repoName": "raiox",
+  "logsDir": "../onp-worktrees/raiox-raiox-servico-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-007",
+      "titulo": "Modelos de persistência e migração inicial",
+      "modelo": "gpt-6-sol",
+      "esforco": "medium",
+      "arquivos": [
+        "api/models.py",
+        "api/database.py",
+        "api/schemas.py",
+        "alembic/",
+        "tests/test_raiox_servico.py"
+      ],
+      "refs": [
+        "US-007",
+        "US-008",
+        "AC-011"
+      ]
+    },
+    {
+      "id": "T-008",
+      "titulo": "API de upload, exemplos e consulta",
+      "modelo": "gpt-6-sol",
+      "esforco": "medium",
+      "arquivos": [
+        "api/main.py",
+        "api/deps.py",
+        "api/schemas.py",
+        "tests/test_raiox_servico.py"
+      ],
+      "refs": [
+        "US-007",
+        "US-008",
+        "AC-008",
+        "AC-009",
+        "AC-011"
+      ]
+    },
+    {
+      "id": "T-009",
+      "titulo": "Worker RQ e ciclo de vida do pcap",
+      "modelo": "gpt-6-sol",
+      "esforco": "medium",
+      "arquivos": [
+        "worker/tasks.py",
+        "worker/queue.py",
+        "core/analisar.py",
+        "tests/test_raiox_servico.py"
+      ],
+      "refs": [
+        "US-008",
+        "AC-010",
+        "AC-011",
+        "AC-012"
+      ]
+    },
+    {
+      "id": "T-010",
+      "titulo": "Limpeza, retenção e limites de serviço",
+      "modelo": "gpt-6-luna",
+      "esforco": "low",
+      "arquivos": [
+        "api/limites.py",
+        "worker/limpeza.py",
+        "tests/test_raiox_servico.py"
+      ],
+      "refs": [
+        "US-009",
+        "AC-012",
+        "AC-013"
+      ]
+    }
+  ],
+  "concluidas": [],
+  "avisos": []
+}

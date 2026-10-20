@@ -1,0 +1,437 @@
+{
+  "schema": 1,
+  "sinais": {
+    "ARQUIVO_INEXISTENTE::raiox-aplicacao::T-001": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "raiox-aplicacao",
+      "ref": "T-001",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T02:30:13.789Z",
+      "ultimaVez": "2026-10-20T02:30:13.811Z",
+      "gitRev": null
+    },
+    "ARQUIVO_INEXISTENTE::raiox-aplicacao::T-002": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "raiox-aplicacao",
+      "ref": "T-002",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-20T02:30:13.811Z",
+      "ultimaVez": "2026-10-20T02:30:13.811Z",
+      "gitRev": null
+    },
+    "ARQUIVO_INEXISTENTE::raiox-aplicacao::T-003": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "raiox-aplicacao",
+      "ref": "T-003",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-20T02:30:13.811Z",
+      "ultimaVez": "2026-10-20T02:55:43.371Z",
+      "gitRev": null
+    },
+    "ARQUIVO_INEXISTENTE::raiox-aplicacao::T-004": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "raiox-aplicacao",
+      "ref": "T-004",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T02:30:13.811Z",
+      "ultimaVez": "2026-10-20T02:30:13.811Z",
+      "gitRev": null
+    },
+    "AC_SEM_PROVA::raiox-aplicacao::AC-001": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "raiox-aplicacao",
+      "ref": "AC-001",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-20T02:30:13.811Z",
+      "ultimaVez": "2026-10-20T04:03:32.542Z",
+      "gitRev": null
+    },
+    "AC_SEM_PROVA::raiox-aplicacao::AC-002": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "raiox-aplicacao",
+      "ref": "AC-002",
+      "ocorrencias": 41,
+      "primeiraVez": "2026-10-20T02:30:13.811Z",
+      "ultimaVez": "2026-10-20T16:29:57.116Z",
+      "gitRev": null
+    },
+    "AC_SEM_PROVA::raiox-aplicacao::AC-003": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "raiox-aplicacao",
+      "ref": "AC-003",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-20T02:30:13.811Z",
+      "ultimaVez": "2026-10-20T04:03:32.542Z",
+      "gitRev": null
+    },
+    "AC_SEM_PROVA::raiox-aplicacao::AC-004": {
+      "codigo": "AC_SEM_PROVA",
+      "feature": "raiox-aplicacao",
+      "ref": "AC-004",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-20T02:30:13.811Z",
+      "ultimaVez": "2026-10-20T04:03:32.542Z",
+      "gitRev": null
+    },
+    "GLOB_SEM_ARQUIVOS::—::P-002": {
+      "codigo": "GLOB_SEM_ARQUIVOS",
+      "feature": "—",
+      "ref": "P-002",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T02:30:13.811Z",
+      "ultimaVez": "2026-10-20T02:30:13.811Z",
+      "gitRev": null
+    },
+    "Q_ABERTA::raiox-aplicacao::Q-001": {
+      "codigo": "Q_ABERTA",
+      "feature": "raiox-aplicacao",
+      "ref": "Q-001",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-20T02:54:24.689Z",
+      "ultimaVez": "2026-10-20T02:55:43.371Z",
+      "gitRev": null
+    },
+    "TASK_CONCLUIDA_SEM_PROVA::raiox-aplicacao::T-001": {
+      "codigo": "TASK_CONCLUIDA_SEM_PROVA",
+      "feature": "raiox-aplicacao",
+      "ref": "T-001",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-20T02:54:24.699Z",
+      "ultimaVez": "2026-10-20T04:03:32.542Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::core/__init__.py": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "core/__init__.py",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T02:54:24.699Z",
+      "ultimaVez": "2026-10-20T02:54:24.699Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::core/__pycache__/__init__.cpython-312.pyc": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "core/__pycache__/__init__.cpython-312.pyc",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T02:54:24.699Z",
+      "ultimaVez": "2026-10-20T02:54:24.699Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::core/__pycache__/__init__.cpython-313.pyc": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "core/__pycache__/__init__.cpython-313.pyc",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T02:54:24.699Z",
+      "ultimaVez": "2026-10-20T02:54:24.699Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::core/__pycache__/extracao.cpython-312.pyc": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "core/__pycache__/extracao.cpython-312.pyc",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T02:54:24.699Z",
+      "ultimaVez": "2026-10-20T02:54:24.699Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::core/__pycache__/matriz.cpython-312.pyc": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "core/__pycache__/matriz.cpython-312.pyc",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T02:54:24.699Z",
+      "ultimaVez": "2026-10-20T02:54:24.699Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::core/__pycache__/matriz.cpython-313.pyc": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "core/__pycache__/matriz.cpython-313.pyc",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T02:54:24.699Z",
+      "ultimaVez": "2026-10-20T02:54:24.699Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::core/extracao.py": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "core/extracao.py",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T02:54:24.699Z",
+      "ultimaVez": "2026-10-20T02:54:24.699Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::core/matriz.py": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "core/matriz.py",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T02:54:24.699Z",
+      "ultimaVez": "2026-10-20T02:54:24.699Z",
+      "gitRev": null
+    },
+    "VERIFICACAO_MALFORMADA::—::P-002": {
+      "codigo": "VERIFICACAO_MALFORMADA",
+      "feature": "—",
+      "ref": "P-002",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T02:54:24.699Z",
+      "ultimaVez": "2026-10-20T02:54:24.699Z",
+      "gitRev": null
+    },
+    "TASK_CONCLUIDA_SEM_PROVA::raiox-aplicacao::T-003": {
+      "codigo": "TASK_CONCLUIDA_SEM_PROVA",
+      "feature": "raiox-aplicacao",
+      "ref": "T-003",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T04:03:32.542Z",
+      "ultimaVez": "2026-10-20T04:03:32.542Z",
+      "gitRev": null
+    },
+    "VERIFY_FALHOU::raiox-aplicacao::AC-002": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "raiox-aplicacao",
+      "ref": "AC-002",
+      "ocorrencias": 13,
+      "primeiraVez": "2026-10-20T04:06:00.448Z",
+      "ultimaVez": "2026-10-20T13:43:28.836Z",
+      "gitRev": null
+    },
+    "VERIFY_OBSOLETO::raiox-aplicacao::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "raiox-aplicacao",
+      "ref": "—",
+      "ocorrencias": 20,
+      "primeiraVez": "2026-10-20T04:15:56.484Z",
+      "ultimaVez": "2026-10-20T16:29:57.117Z",
+      "gitRev": null
+    },
+    "VERIFY_FALHOU::raiox-aplicacao::AC-001": {
+      "codigo": "VERIFY_FALHOU",
+      "feature": "raiox-aplicacao",
+      "ref": "AC-001",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-20T04:45:09.077Z",
+      "ultimaVez": "2026-10-20T06:29:27.794Z",
+      "gitRev": null
+    },
+    "VERIFY_OBSOLETO::raiox-pipeline::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "raiox-pipeline",
+      "ref": "—",
+      "ocorrencias": 20,
+      "primeiraVez": "2026-10-20T04:46:41.406Z",
+      "ultimaVez": "2026-10-20T16:29:57.117Z",
+      "gitRev": null
+    },
+    "VERIFY_OBSOLETO::raiox-servico::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "raiox-servico",
+      "ref": "—",
+      "ocorrencias": 20,
+      "primeiraVez": "2026-10-20T04:46:41.406Z",
+      "ultimaVez": "2026-10-20T16:29:57.117Z",
+      "gitRev": null
+    },
+    "ID_DUPLICADO::raiox-servico::ASM-010": {
+      "codigo": "ID_DUPLICADO",
+      "feature": "raiox-servico",
+      "ref": "ASM-010",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T05:10:05.578Z",
+      "ultimaVez": "2026-10-20T05:10:05.579Z",
+      "gitRev": null
+    },
+    "ARQUIVO_INEXISTENTE::raiox-interface::T-012": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "raiox-interface",
+      "ref": "T-012",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T05:10:05.579Z",
+      "ultimaVez": "2026-10-20T05:10:05.579Z",
+      "gitRev": null
+    },
+    "ARQUIVO_INEXISTENTE::raiox-interface::T-013": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "raiox-interface",
+      "ref": "T-013",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-20T05:10:05.579Z",
+      "ultimaVez": "2026-10-20T05:19:35.199Z",
+      "gitRev": null
+    },
+    "ARQUIVO_INEXISTENTE::raiox-interface::T-014": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "raiox-interface",
+      "ref": "T-014",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-20T05:10:05.579Z",
+      "ultimaVez": "2026-10-20T05:19:35.199Z",
+      "gitRev": null
+    },
+    "ARQUIVO_INEXISTENTE::raiox-interface::T-015": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "raiox-interface",
+      "ref": "T-015",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-20T05:10:05.579Z",
+      "ultimaVez": "2026-10-20T05:19:35.199Z",
+      "gitRev": null
+    },
+    "ARQUIVO_INEXISTENTE::raiox-interface::T-016": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "raiox-interface",
+      "ref": "T-016",
+      "ocorrencias": 4,
+      "primeiraVez": "2026-10-20T05:10:05.579Z",
+      "ultimaVez": "2026-10-20T06:02:11.510Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::raiox-interface::AC-016": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "raiox-interface",
+      "ref": "AC-016",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T05:10:05.579Z",
+      "ultimaVez": "2026-10-20T05:25:02.061Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::raiox-interface::AC-017": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "raiox-interface",
+      "ref": "AC-017",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T05:10:05.579Z",
+      "ultimaVez": "2026-10-20T05:25:02.061Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::raiox-interface::AC-018": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "raiox-interface",
+      "ref": "AC-018",
+      "ocorrencias": 2,
+      "primeiraVez": "2026-10-20T05:10:05.579Z",
+      "ultimaVez": "2026-10-20T05:19:35.199Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::raiox-interface::AC-019": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "raiox-interface",
+      "ref": "AC-019",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T05:10:05.579Z",
+      "ultimaVez": "2026-10-20T05:10:05.579Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::raiox-interface::AC-020": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "raiox-interface",
+      "ref": "AC-020",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T05:10:05.579Z",
+      "ultimaVez": "2026-10-20T05:25:02.061Z",
+      "gitRev": null
+    },
+    "AC_SEM_TESTE::raiox-interface::AC-021": {
+      "codigo": "AC_SEM_TESTE",
+      "feature": "raiox-interface",
+      "ref": "AC-021",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T05:10:05.579Z",
+      "ultimaVez": "2026-10-20T05:25:02.061Z",
+      "gitRev": null
+    },
+    "VERIFY_OBSOLETO::raiox-interface::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "raiox-interface",
+      "ref": "—",
+      "ocorrencias": 10,
+      "primeiraVez": "2026-10-20T06:33:59.611Z",
+      "ultimaVez": "2026-10-20T16:11:39.127Z",
+      "gitRev": null
+    },
+    "Q_ABERTA::raiox-roadmap::Q-002": {
+      "codigo": "Q_ABERTA",
+      "feature": "raiox-roadmap",
+      "ref": "Q-002",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T13:09:36.340Z",
+      "ultimaVez": "2026-10-20T13:13:42.125Z",
+      "gitRev": null
+    },
+    "Q_ABERTA::raiox-roadmap::Q-003": {
+      "codigo": "Q_ABERTA",
+      "feature": "raiox-roadmap",
+      "ref": "Q-003",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T13:09:36.341Z",
+      "ultimaVez": "2026-10-20T13:13:42.125Z",
+      "gitRev": null
+    },
+    "Q_ABERTA::raiox-roadmap::Q-004": {
+      "codigo": "Q_ABERTA",
+      "feature": "raiox-roadmap",
+      "ref": "Q-004",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T13:09:36.341Z",
+      "ultimaVez": "2026-10-20T13:13:42.125Z",
+      "gitRev": null
+    },
+    "ARQUIVO_INEXISTENTE::raiox-roadmap::T-022": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "raiox-roadmap",
+      "ref": "T-022",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T13:09:36.341Z",
+      "ultimaVez": "2026-10-20T13:13:42.125Z",
+      "gitRev": null
+    },
+    "ARQUIVO_INEXISTENTE::raiox-roadmap::T-023": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "raiox-roadmap",
+      "ref": "T-023",
+      "ocorrencias": 3,
+      "primeiraVez": "2026-10-20T13:09:36.341Z",
+      "ultimaVez": "2026-10-20T13:13:42.125Z",
+      "gitRev": null
+    },
+    "VERIFY_OBSOLETO::raiox-roadmap::—": {
+      "codigo": "VERIFY_OBSOLETO",
+      "feature": "raiox-roadmap",
+      "ref": "—",
+      "ocorrencias": 5,
+      "primeiraVez": "2026-10-20T13:09:36.341Z",
+      "ultimaVez": "2026-10-20T16:29:57.117Z",
+      "gitRev": null
+    },
+    "ARQUIVO_ORFAO::—::treino/experimento_rotulos.py": {
+      "codigo": "ARQUIVO_ORFAO",
+      "feature": "—",
+      "ref": "treino/experimento_rotulos.py",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T13:21:50.923Z",
+      "ultimaVez": "2026-10-20T13:21:50.923Z",
+      "gitRev": null
+    },
+    "ARQUIVO_INEXISTENTE::raiox-roadmap::T-024": {
+      "codigo": "ARQUIVO_INEXISTENTE",
+      "feature": "raiox-roadmap",
+      "ref": "T-024",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T13:42:11.695Z",
+      "ultimaVez": "2026-10-20T13:42:11.695Z",
+      "gitRev": null
+    },
+    "ID_DUPLICADO::raiox-roadmap::ASM-013": {
+      "codigo": "ID_DUPLICADO",
+      "feature": "raiox-roadmap",
+      "ref": "ASM-013",
+      "ocorrencias": 1,
+      "primeiraVez": "2026-10-20T16:22:04.086Z",
+      "ultimaVez": "2026-10-20T16:22:04.087Z",
+      "gitRev": null
+    }
+  }
+}

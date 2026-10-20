@@ -1,0 +1,25 @@
+# Datasets e capturas processadas (grandes e fora do escopo da T-001)
+dataset.npz
+pk_bruto.npy
+splits.npz
+dados_processados/
+*.pcap
+*.pcapng
+*.pcap.npz
+*.pcapng.npz
+
+# Checkpoints e artefatos de treino gerados
+*.pt
+*.pth
+
+# Ambiente virtual local
+.venv/
+.env
+web/.env*
+
+# Saídas locais de execução
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/

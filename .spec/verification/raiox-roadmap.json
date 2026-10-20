@@ -1,0 +1,47 @@
+{
+  "feature": "raiox-roadmap",
+  "timestamp": "2026-10-20T13:42:09.159Z",
+  "gitRev": null,
+  "command": "./.venv/bin/python tests/run_tap.py",
+  "reporter": "tap",
+  "exitCode": 1,
+  "testsParsed": 67,
+  "results": {
+    "AC-022": {
+      "status": "pass",
+      "testName": "Checklist não declara validação visual que ainda não ocorreu @spec:AC-022",
+      "method": "tap"
+    },
+    "AC-023": {
+      "status": "pass",
+      "testName": "Tabela viva depende do resumo par a par @spec:AC-023, com ressalva científica.",
+      "method": "tap"
+    },
+    "AC-024": {
+      "status": "pass",
+      "testName": "Comandos e recursos compartilhados @spec:AC-024",
+      "method": "tap"
+    },
+    "AC-025": {
+      "status": "pass",
+      "testName": "Comandos remotos seguros e deploy ainda pendente @spec:AC-025",
+      "method": "tap"
+    },
+    "AC-026": {
+      "status": "pass",
+      "testName": "Pares estratificados preservam validação/teste e métricas @spec:AC-026",
+      "method": "tap"
+    },
+    "AC-027": {
+      "status": "pass",
+      "testName": "README raiz guia instalação, uso e limites @spec:AC-027",
+      "method": "tap"
+    }
+  },
+  "principles": {
+    "P-002": {
+      "status": "pass",
+      "testName": "Segredos não ficam escritos no código @principle:P-002"
+    }
+  }
+}

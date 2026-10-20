@@ -1,0 +1,5 @@
+# Dependências adicionais para exportação e validação de artefatos T-003.
+# Torch, NumPy e scikit-learn devem seguir as versões do experimento de origem.
+onnx==1.23.2
+onnxruntime==1.31.0
+onnxscript==0.7.2

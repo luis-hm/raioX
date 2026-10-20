@@ -1,0 +1,41 @@
+{
+  "cenario": "N",
+  "semente": 2,
+  "fracao_rotulos": 1.0,
+  "classes": [
+    "chat",
+    "email",
+    "transferencia",
+    "streaming",
+    "voip"
+  ],
+  "versao_python": "3.12.3",
+  "versao_numpy": "2.1.3",
+  "versao_sklearn": "1.6.1",
+  "versao_torch": "2.11.0+cpu",
+  "versao_onnxruntime": "1.31.0",
+  "modelos": {
+    "b1.joblib": "f6f5bfa2fc75d0b6d4e6d503daaec3d05ff4e24b6e94e1af96688c20eec526fd",
+    "b2.onnx": "af388e140c1ea166eae8a92ff9190cd0cc45e8aee29953727acb29759980c8e8",
+    "p.onnx": "24416c661aaa16c06f5894ed3f81e0244b9bfbb907a4753e4a2b2e7e8260c0af",
+    "norm.json": "241b1f1675dd85143169ab68f996d735ec9b05e7a0b6fecb9e0db77cef9d9db9"
+  },
+  "comparacao_referencia": {
+    "B1": {
+      "divergencias": 18,
+      "n_teste": 970,
+      "previsoes_iguais_referencia": false
+    },
+    "B2": {
+      "divergencias": 199,
+      "n_teste": 970,
+      "previsoes_iguais_referencia": false
+    },
+    "P": {
+      "divergencias": 292,
+      "n_teste": 970,
+      "previsoes_iguais_referencia": false
+    }
+  },
+  "aviso": "reconstituicao local; nao afirmar equivalencia com os classificadores do estudo"
+}

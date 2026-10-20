@@ -1,0 +1,20 @@
+{
+  "cenario": "N",
+  "semente": 1,
+  "fracao_rotulos": 1.0,
+  "mu": [
+    -0.026385299861431122,
+    4.199131965637207,
+    0.0,
+    0.0
+  ],
+  "sd": [
+    0.4270103871822357,
+    4.038964748382568,
+    1.0,
+    1.0
+  ],
+  "n_treino_com_extras": 3304,
+  "n_treino_rotulado": 3223,
+  "normalizacao": "canais 0 e 1; posi\u00e7\u00f5es ausentes zeradas"
+}

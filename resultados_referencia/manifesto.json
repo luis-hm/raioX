@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "origem": {
+    "arquivo_zip": "trabalho de redes-20261019T234840Z-1-001.zip",
+    "diretorio_extraido": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego",
+    "diretorio_fontes": "resultados/",
+    "observacao": "Tabelas finais do experimento; os CSVs publicados são cópias sem alterações científicas."
+  },
+  "arquivos": [
+    {
+      "arquivo": "resultados.csv",
+      "origem": "resultados/resultados.csv",
+      "descricao": "Resultados consolidados das execuções finais do experimento, incluindo a correção da avaliação do método P.",
+      "linhas_dados": 250,
+      "sha256": "8a01910cba088a24cbc0113582dcdb564d5ae48e5507cd8cb6c1fba458167d64"
+    },
+    {
+      "arquivo": "etapa9_medias_ic95.csv",
+      "origem": "resultados/etapa9_medias_ic95.csv",
+      "descricao": "Médias, desvios-padrão e intervalos de confiança de 95% da Etapa 9.",
+      "linhas_dados": 50,
+      "sha256": "7afa39cc62dfe1550abe722c617adc43ec73684b400148294ff56e151bd7e8b5"
+    },
+    {
+      "arquivo": "etapa9_testes_pareados.csv",
+      "origem": "resultados/etapa9_testes_pareados.csv",
+      "descricao": "Testes pareados, intervalos de confiança, valores-p ajustados e vereditos da Etapa 9.",
+      "linhas_dados": 28,
+      "sha256": "87a7d4da674d2f53bce743d5099577baae5ca44a899262caed404b53b106b3d3"
+    },
+    {
+      "arquivo": "etapa9_h3_quedas.csv",
+      "origem": "resultados/etapa9_h3_quedas.csv",
+      "descricao": "Análise de quedas sob perda de rótulos para a hipótese H3 na Etapa 9.",
+      "linhas_dados": 8,
+      "sha256": "170de05731b3b2f323f3e4c59070dc64cba8ddd4382d82f8cd42e789ed4e80dd"
+    },
+    {
+      "arquivo": "etapa9_skype_N.csv",
+      "origem": "resultados/etapa9_skype_N.csv",
+      "descricao": "Resultados por categoria para Skype e demais aplicações no cenário N.",
+      "linhas_dados": 18,
+      "sha256": "204b4c37a4c0327a7ed84ebb8356132aa6399cda07161976c3286cfcb3fe06c6"
+    }
+  ],
+  "exclusoes": [
+    {
+      "origem": "resultados/resultados_piloto.csv",
+      "tambem": "resultados/resultados_piloto_v2.csv",
+      "motivo": "Resultados de piloto; não representam o conjunto final de execuções."
+    },
+    {
+      "origem": "resultados/resultados_antes_correcao_P.csv",
+      "motivo": "Resultados anteriores à correção da avaliação do método P; não usar em gráficos ou comparações finais."
+    },
+    {
+      "origem": "resultados/previsoes_antes_correcao_P/",
+      "motivo": "Previsões antigas associadas à versão anterior à correção do método P."
+    }
+  ]
+}

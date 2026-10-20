@@ -1,0 +1,45 @@
+{
+  "runId": "raiox-raiox-interface-mvgauylz",
+  "feature": "raiox-interface",
+  "agent": "codex",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-20 06:26",
+  "branchTrabalho": "spec/raiox-interface",
+  "baseDir": ".spec/features/raiox-interface",
+  "specDir": ".spec",
+  "repoName": "raiox",
+  "logsDir": "../onp-worktrees/raiox-raiox-interface-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-018",
+      "titulo": "README alinhado ao contrato implementado",
+      "modelo": "gpt-6-luna",
+      "esforco": "low",
+      "arquivos": [
+        "README.md",
+        "tests/test_raiox_interface.py"
+      ],
+      "refs": [
+        "US-010",
+        "AC-018",
+        "AC-019",
+        "AC-021"
+      ]
+    }
+  ],
+  "concluidas": [
+    "T-011",
+    "T-012",
+    "T-013",
+    "T-014",
+    "T-015",
+    "T-016",
+    "T-017"
+  ],
+  "avisos": []
+}

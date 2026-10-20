@@ -1,0 +1,16 @@
+# Dependências completas da API e do worker em produção.
+# O treino/experimento usa requirements.txt; o serviço não precisa de PyTorch/CUDA.
+numpy==2.1.3
+scikit-learn==1.6.1
+dpkt==1.9.8
+joblib==1.6.0
+onnxruntime==1.31.0
+fastapi==0.150.0
+uvicorn==0.54.0
+sqlalchemy==2.1.5
+alembic==1.20.0
+rq==2.12.0
+redis==8.1.0
+python-multipart==0.0.32
+psycopg[binary]==3.3.6
+httpx==0.28.1

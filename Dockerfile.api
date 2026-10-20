@@ -1,0 +1,25 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+COPY requirements-service.txt ./
+RUN python -m pip install --no-cache-dir -r requirements-service.txt
+
+COPY alembic/ ./alembic/
+COPY api/ ./api/
+COPY core/ ./core/
+COPY worker/ ./worker/
+COPY artefatos/ ./artefatos/
+COPY exemplos/ ./exemplos/
+
+RUN addgroup --system --gid 10001 raiox \
+    && adduser --system --uid 10001 --ingroup raiox raiox \
+    && mkdir -p /data/uploads \
+    && chown -R raiox:raiox /app /data/uploads
+
+USER raiox
+
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]

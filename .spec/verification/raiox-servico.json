@@ -1,0 +1,52 @@
+{
+  "feature": "raiox-servico",
+  "timestamp": "2026-10-20T13:47:11.480Z",
+  "gitRev": null,
+  "command": "./.venv/bin/python tests/run_tap.py",
+  "reporter": "tap",
+  "exitCode": 1,
+  "testsParsed": 67,
+  "results": {
+    "AC-008": {
+      "status": "pass",
+      "testName": "Falha da fila desfaz registro e arquivo temporário @spec:AC-008",
+      "method": "tap"
+    },
+    "AC-009": {
+      "status": "pass",
+      "testName": "Só categorias da biblioteca geram referência imutável @spec:AC-009",
+      "method": "tap"
+    },
+    "AC-010": {
+      "status": "pass",
+      "testName": "Exemplo usa dados da biblioteca e guarda categoria herdada @spec:AC-010",
+      "method": "tap"
+    },
+    "AC-011": {
+      "status": "pass",
+      "testName": "Consultas limitam tabela e ocultam rótulos de upload @spec:AC-011",
+      "method": "tap"
+    },
+    "AC-012": {
+      "status": "pass",
+      "testName": "Upload e exemplo compartilham rate limit com resposta opaca @spec:AC-012",
+      "method": "tap"
+    },
+    "AC-013": {
+      "status": "pass",
+      "testName": "Remove expiração inclusiva/cascata e órfãos antigos, preserva recentes @spec:AC-013",
+      "method": "tap"
+    },
+    "AC-014": {
+      "status": "pass",
+      "testName": "JSON e limites do README persistem em SQLite @spec:AC-014",
+      "method": "tap"
+    }
+  },
+  "principles": {
+    "P-002": {
+      "status": "pass",
+      "testName": "Segredos não ficam escritos no código @principle:P-002"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "runId": "raiox-raiox-aplicacao-mvg5xe8j",
+  "feature": "raiox-aplicacao",
+  "agent": "codex",
+  "modo": "sequencial",
+  "paralelizar": null,
+  "modeloForcado": null,
+  "esforcoForcado": null,
+  "geradoEm": "2026-10-20 04:07",
+  "branchTrabalho": "spec/raiox-aplicacao",
+  "baseDir": ".spec/features/raiox-aplicacao",
+  "specDir": ".spec",
+  "repoName": "raiox",
+  "logsDir": "../onp-worktrees/raiox-raiox-aplicacao-logs",
+  "ondas": [],
+  "faixas": [],
+  "sequenciais": [
+    {
+      "id": "T-002",
+      "titulo": "Reproduzir extração, matrizes e classificadores",
+      "modelo": "gpt-6-sol",
+      "esforco": "medium",
+      "arquivos": [
+        "core/__init__.py",
+        "core/extracao.py",
+        "core/matriz.py",
+        "treino/__init__.py",
+        "treino/reproduzir.py",
+        "tests/test_spec_raiox_aplicacao.py"
+      ],
+      "refs": [
+        "US-001",
+        "AC-001",
+        "AC-002"
+      ]
+    }
+  ],
+  "concluidas": [
+    "T-001",
+    "T-003",
+    "T-004"
+  ],
+  "avisos": []
+}

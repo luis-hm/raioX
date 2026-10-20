@@ -1,0 +1,62 @@
+{
+  "feature": "raiox-interface",
+  "timestamp": "2026-10-20T16:24:45.207Z",
+  "gitRev": null,
+  "command": "./.venv/bin/python tests/run_tap.py",
+  "reporter": "tap",
+  "exitCode": 1,
+  "testsParsed": 69,
+  "results": {
+    "AC-015": {
+      "status": "pass",
+      "testName": "Shell aplica tokens do DESIGN, foco visível e layout responsivo @spec:AC-015",
+      "method": "tap"
+    },
+    "AC-016": {
+      "status": "pass",
+      "testName": "Cliente cria uploads/exemplos e consulta filtros reais, 404 e falha de rede @spec:AC-016 @spec:AC-021",
+      "method": "tap"
+    },
+    "AC-017": {
+      "status": "pass",
+      "testName": "Polling percorre estados recebidos, preserva pacotes lidos e para em pronta/erro/404 @spec:AC-017",
+      "method": "tap"
+    },
+    "AC-018": {
+      "status": "pass",
+      "testName": "Resposta API alimenta render real, semente isolada e mapa limitado com omissões @spec:AC-018 @spec:AC-019",
+      "method": "tap"
+    },
+    "AC-019": {
+      "status": "pass",
+      "testName": "Resposta API alimenta render real, semente isolada e mapa limitado com omissões @spec:AC-018 @spec:AC-019",
+      "method": "tap"
+    },
+    "AC-020": {
+      "status": "pass",
+      "testName": "Leitura executável da metodologia usa 250 execuções e médias finais @spec:AC-020",
+      "method": "tap"
+    },
+    "AC-021": {
+      "status": "pass",
+      "testName": "Cliente cria uploads/exemplos e consulta filtros reais, 404 e falha de rede @spec:AC-016 @spec:AC-021",
+      "method": "tap"
+    },
+    "AC-028": {
+      "status": "pass",
+      "testName": "Exemplo abre em um clique, sem painel agregado nem 100% sobre n=1 @spec:AC-028",
+      "method": "tap"
+    },
+    "AC-029": {
+      "status": "pass",
+      "testName": "Comparação consulta API por exemplo e mantém painel agregado para upload @spec:AC-029",
+      "method": "tap"
+    }
+  },
+  "principles": {
+    "P-002": {
+      "status": "pass",
+      "testName": "Segredos não ficam escritos no código @principle:P-002"
+    }
+  }
+}

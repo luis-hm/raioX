@@ -1,0 +1,41 @@
+{
+  "cenario": "N",
+  "semente": 4,
+  "fracao_rotulos": 1.0,
+  "classes": [
+    "chat",
+    "email",
+    "transferencia",
+    "streaming",
+    "voip"
+  ],
+  "versao_python": "3.12.3",
+  "versao_numpy": "2.1.3",
+  "versao_sklearn": "1.6.1",
+  "versao_torch": "2.11.0+cpu",
+  "versao_onnxruntime": "1.31.0",
+  "modelos": {
+    "b1.joblib": "820ed14165b93e51d19e25a8914db33c3e8e1c6922019e723b234c0509f28dbc",
+    "b2.onnx": "58161abe187ae91c1695bf49d99b48311cee0dc0ce1a346b87fae409c7897e18",
+    "p.onnx": "564031f1fe09effa9c15b18c9028cc4bfee73c265dee2fa30392b843ca2c7d12",
+    "norm.json": "5819cc0f7f9d77350c0a760de015f0242a14de510213451cd0c3c65ffd44f64e"
+  },
+  "comparacao_referencia": {
+    "B1": {
+      "divergencias": 7,
+      "n_teste": 1060,
+      "previsoes_iguais_referencia": false
+    },
+    "B2": {
+      "divergencias": 156,
+      "n_teste": 1060,
+      "previsoes_iguais_referencia": false
+    },
+    "P": {
+      "divergencias": 94,
+      "n_teste": 1060,
+      "previsoes_iguais_referencia": false
+    }
+  },
+  "aviso": "reconstituicao local; nao afirmar equivalencia com os classificadores do estudo"
+}

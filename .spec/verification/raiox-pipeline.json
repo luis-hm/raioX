@@ -1,0 +1,32 @@
+{
+  "feature": "raiox-pipeline",
+  "timestamp": "2026-10-20T13:45:58.687Z",
+  "gitRev": null,
+  "command": "./.venv/bin/python tests/run_tap.py",
+  "reporter": "tap",
+  "exitCode": 1,
+  "testsParsed": 67,
+  "results": {
+    "AC-005": {
+      "status": "pass",
+      "testName": "Fluxos extras ficam contados, mas sem palpites @spec:AC-005",
+      "method": "tap"
+    },
+    "AC-006": {
+      "status": "pass",
+      "testName": "Falha de leitura não ecoa nome sensível nem bytes @spec:AC-006",
+      "method": "tap"
+    },
+    "AC-007": {
+      "status": "pass",
+      "testName": "Exemplos seguem a ordem das fontes e não expõem dados de rede @spec:AC-007",
+      "method": "tap"
+    }
+  },
+  "principles": {
+    "P-002": {
+      "status": "pass",
+      "testName": "Segredos não ficam escritos no código @principle:P-002"
+    }
+  }
+}
