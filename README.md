@@ -1,3 +1,10 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/brand/raio-x-logo-dark.svg">
+    <img alt="Raio-X do Tráfego" src="docs/brand/raio-x-logo-light.svg" width="440">
+  </picture>
+</p>
+
 # Raio-X do Tráfego
 
 **Uma aplicação didática para explorar o que modelos de aprendizado de máquina conseguem — e não conseguem — inferir a partir dos metadados de fluxos de rede.**
