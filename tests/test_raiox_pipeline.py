@@ -158,11 +158,15 @@ class TestRaioXPipeline(unittest.TestCase):
         self.assertEqual([e["categoria_captura"] for e in exemplos], list(CLASSES))
         self.assertEqual(len(exemplos), 5)
 
+        with np.load(processados / "splits.npz", allow_pickle=False) as splits:
+            no_treino = np.stack([splits[f"N_s{s}_part"] for s in range(5)], axis=1) == 0
         primeiros = {}
         for indice, (rotulo, linha) in enumerate(zip(y, meta)):
             classe = CLASSES[int(rotulo)]
             if linha["principal"].strip().lower() == "true":
-                primeiros.setdefault(classe, indice)
+                atual = primeiros.get(classe)
+                if atual is None or no_treino[indice].sum() < no_treino[atual].sum():
+                    primeiros[classe] = indice
         for exemplo in exemplos:
             classe = exemplo["categoria_captura"]
             indice = primeiros[classe]
@@ -171,6 +175,8 @@ class TestRaioXPipeline(unittest.TestCase):
             self.assertEqual(exemplo["sessao"], linha["sessao"])
             self.assertEqual(exemplo["aplicacao"], linha["aplicacao"])
             self.assertEqual(exemplo["proto"], int(linha["proto"]))
+            self.assertEqual(exemplo["sementes_no_treino"],
+                             [s for s in range(5) if no_treino[indice, s]])
             self.assertIn(exemplo["proto"], (6, 17))
             matriz = np.asarray(exemplo["matriz_32x4"], dtype=np.float32)
             self.assertEqual(matriz.shape, (32, 4))
@@ -197,8 +203,12 @@ class TestRaioXPipeline(unittest.TestCase):
         for exemplo in exemplos:
             self.assertEqual(set(exemplo), {
                 "categoria_captura", "proto", "matriz_32x4", "pacotes", "arquivo_origem",
-                "sessao", "aplicacao"
+                "sessao", "aplicacao", "sementes_no_treino"
             })
+        # Divisão por sessão: nenhum exemplo de chat, e-mail, transferência ou VoIP foi
+        # treino em alguma semente; streaming não tem fluxo fora do treino em todas.
+        self.assertEqual({e["categoria_captura"]: len(e["sementes_no_treino"]) for e in exemplos},
+                         {"chat": 0, "email": 0, "transferencia": 0, "streaming": 1, "voip": 0})
         publicado = json.dumps(biblioteca, ensure_ascii=False).lower()
         for marcador in ("payload", "bytes_crus", "raw_bytes", "ip_origem", "ip_destino"):
             self.assertNotIn(marcador, publicado)

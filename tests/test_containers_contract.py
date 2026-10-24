@@ -88,7 +88,8 @@ class TestContainersContract(unittest.TestCase):
         self.assertEqual(self.services["web"]["build"]["context"],
                          self.services["migrate"]["build"]["context"])
         for name in ("api", "worker", "limpeza"):
-            self.assertEqual(self.services[name]["build"], self.services["migrate"]["build"])
+            self.assertEqual(self.services[name]["image"], self.services["migrate"]["image"])
+            self.assertNotIn("build", self.services[name])
         web_dockerfile = (ROOT / "web/Dockerfile").read_text()
         self.assertIn("COPY resultados_referencia/ ./resultados_referencia/", web_dockerfile)
         self.assertIn("COPY --from=builder --chown=node:node /app/resultados_referencia ./resultados_referencia", web_dockerfile)

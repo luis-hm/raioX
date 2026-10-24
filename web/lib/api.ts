@@ -12,6 +12,7 @@ export type ResumoSemente = {
   concordancia: Record<string, number>;
   concordancia_pares?: Record<"B1_B2" | "B1_P" | "B2_P", ConcordanciaPar>;
   serie_temporal: { segundo: number; bytes_observados: number }[];
+  exemplo_no_treino?: boolean | null;
 };
 export type StatusAnalise = {
   id: string; nome_exibicao: string | null; estado: EstadoAnalise; progresso: number; erro: string | null;

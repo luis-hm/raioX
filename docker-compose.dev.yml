@@ -1,0 +1,8 @@
+# Use somente com o Makefile (make dev): o Next.js no host precisa alcançar a API.
+services:
+  api:
+    ports:
+      - "127.0.0.1:8000:8000"
+    networks:
+      - app
+      - public

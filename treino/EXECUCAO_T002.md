@@ -26,6 +26,18 @@
 - AC-002: **não satisfeito**. B1 diverge em **60/5.356** previsões e B2/P em **2.063/10.712**. Nenhum dos 15 modelos satisfaz a igualdade de previsões exigida pela referência. Os classificadores gerados localmente não são considerados artefatos científicos validados.
 - T-001, T-003 e T-004 concluídas com prova; T-002 permanece pendente somente pela paridade de AC-002. A decisão Q-001 está respondida: seguir com a reconstituição local e expor as diferenças.
 
+## Desempenho medido (24/10/2026)
+
+O relatório final informa que as CNNs foram treinadas em GPU T4 (Apêndice A.1); esta reconstituição usou CPU, a causa provável da divergência de B2/P. Na métrica principal do estudo, os modelos locais foram avaliados no mesmo teste de cada semente (`python -m treino.reproduzir --experimento CAMINHO --avaliar-artefatos artefatos --saida artefatos` grava `artefatos/desempenho.json`):
+
+| Método | Macro-F1 local (média ± dp) | Estudo (média ± dp) |
+| --- | --- | --- |
+| B1 | 0,543 ± 0,035 | 0,541 ± 0,034 |
+| B2 | 0,472 ± 0,062 | 0,427 ± 0,051 |
+| P | 0,494 ± 0,061 | 0,495 ± 0,076 |
+
+B1 e P mantêm o desempenho do estudo. O B2 local é mais alto em 4 das 5 sementes; na semente 1 (0,554) passa B1 e P, o que não ocorre no estudo. A ordem média B1 > P > B2 se mantém, mas a diferença P − B2 cai de +0,068 para +0,022. Os palpites do site vêm desses modelos; os vereditos científicos continuam vindo apenas de `resultados_referencia/`.
+
 ## Próximo passo
 
 Para satisfazer AC-002 ainda é necessário localizar a revisão/código ou os classificadores que geraram as previsões gravadas, ou identificar a diferença de ambiente/protocolo que explique os arrays. Até isso ocorrer, usar os artefatos locais apenas como implementação provisória, não como reprodução fiel do estudo.

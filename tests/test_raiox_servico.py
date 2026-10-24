@@ -675,7 +675,8 @@ class TestServicoWorker(unittest.TestCase):
             self.assertEqual(fluxo.pacotes, [[int(a), int(b), c] for a, b, c in exemplo["pacotes"]])
             self.assertEqual(fluxo.proto, exemplo["proto"])
             self.assertEqual(fluxo.rotulo_referencia, 0)
-            self.assertIsNone(fluxo.duracao_s)
+            self.assertLess(len(exemplo["pacotes"]), 100)
+            self.assertEqual(fluxo.duracao_s, exemplo["pacotes"][-1][2])
             self.assertNotIn("arquivo_origem", json.dumps(fluxo.previsoes_por_semente))
             resposta = serializar_fluxo(fluxo, "exemplo").model_dump(mode="json")
             self.assertEqual(resposta["proto"], exemplo["proto"])
@@ -691,6 +692,18 @@ class TestServicoWorker(unittest.TestCase):
             fluxo = session.get(Fluxo, (self.id, 0))
             self.assertLess(len(fluxo.pacotes), 100)
             self.assertEqual(fluxo.duracao_s, fluxo.pacotes[-1][2])
+
+    def test_exemplo_marca_sementes_em_que_foi_treino(self):
+        """Resumo indica as sementes em que o exemplo esteve no treino N @spec:AC-009"""
+        self.iniciar("exemplo")
+        biblioteca = Path(__file__).resolve().parents[1] / "exemplos" / "biblioteca.json"
+        self.assertTrue(processar_analise(self.id, "exemplo", "streaming",
+                        session_factory=self.Session, biblioteca_path=biblioteca,
+                        classificar=self.classificar))
+        with self.Session() as session:
+            resumo = session.get(Analise, self.id).resumo_por_semente
+            self.assertEqual({s: resumo[s]["exemplo_no_treino"] for s in resumo},
+                             {"0": False, "1": False, "2": False, "3": True, "4": False})
 
     def test_ac_010_falha_apaga_upload_e_guarda_erro_seguro(self):
         """Falha da extração marca erro seguro e remove upload @spec:AC-010"""

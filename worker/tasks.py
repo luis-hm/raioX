@@ -54,7 +54,8 @@ def _exemplo(nome, biblioteca_path):
     if matriz.shape != (32, 4) or not 3 <= len(pacotes) <= 100:
         raise ValueError("exemplo inválido")
     _trios(pacotes)
-    if not np.isfinite(matriz).all():
+    if (not np.isfinite(matriz).all()
+            or not set(item["sementes_no_treino"]) <= set(SEMENTES)):
         raise ValueError("exemplo inválido")
     return item, matriz.reshape(1, 32, 4)
 
@@ -274,7 +275,12 @@ def processar_analise(analise_id, origem, referencia, *, session_factory=None,
                 session.add(_fluxo(analise_id, 0, item["proto"], 0, trios, True, previsoes,
                                    CLASSES.index(referencia),
                                    duracao=trios[-1][2] if len(trios) < 100 else None))
-            row.resumo_por_semente = _resumos(previsoes, series, principais)
+            resumos = _resumos(previsoes, series, principais)
+            if origem != "upload":
+                # O estudo só mede desempenho no teste; aqui o exemplo foi treino.
+                for seed in SEMENTES:
+                    resumos[str(seed)]["exemplo_no_treino"] = seed in item["sementes_no_treino"]
+            row.resumo_por_semente = resumos
             row.versao_modelos = VERSAO_MODELOS
             row.estado = "pronta"
             row.erro = None
