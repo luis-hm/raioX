@@ -1,10 +1,3 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/brand/raio-x-logo-dark.svg">
-    <img alt="Raio-X do Tráfego" src="docs/brand/raio-x-logo-light.svg" width="440">
-  </picture>
-</p>
-
 # Raio-X do Tráfego
 
 **Uma aplicação didática para explorar o que modelos de aprendizado de máquina conseguem — e não conseguem — inferir a partir dos metadados de fluxos de rede.**
@@ -40,7 +33,7 @@ O sistema aplica três métodos à classificação de fluxos em **chat, e-mail, 
 - **B2:** rede neural convolucional (CNN);
 - **P:** a mesma arquitetura CNN de B2, com pré-treino.
 
-Para cada fluxo, a aplicação representa até os primeiros 32 pacotes com carga útil em uma matriz 32×4 construída a partir de tamanho, direção, intervalo e máscara de presença. Os palpites da análise ao vivo vêm de modelos locais reconstruídos no cenário N, com 100% dos rótulos e cinco sementes. Eles **não são equivalentes** aos classificadores originais do estudo: a reconstrução divergiu em comparações com previsões salvas. Por isso, os artefatos publicados e os resultados de uploads são mantidos separados; as previsões reconstruídas não devem substituir as tabelas do trabalho.
+Para cada fluxo, a aplicação representa até os primeiros 32 pacotes com carga útil em uma matriz 32×4 construída a partir de tamanho, direção, intervalo e máscara de presença. Os palpites da análise ao vivo vêm de modelos locais reconstruídos no cenário N, com 100% dos rótulos e cinco sementes. Eles **não são equivalentes** aos classificadores originais do estudo: a reconstrução divergiu em comparações com previsões salvas. No macro-F1 do teste, B1 e P locais ficam na média do estudo e o B2 local fica acima dela (detalhes em [`treino/EXECUCAO_T002.md`](treino/EXECUCAO_T002.md)). Os cinco exemplos seguem a divisão por sessão do estudo: só o de streaming esteve no treino de uma semente (a 3), e o Raio-X avisa quando ela é escolhida. Por isso, os artefatos publicados e os resultados de uploads são mantidos separados; as previsões reconstruídas não devem substituir as tabelas do trabalho.
 
 O estudo original avaliou um conjunto e um protocolo específicos. A interface acrescenta exploração visual, uploads e análises que não fizeram parte daquela avaliação. Prefixos e oclusões são explorações de sensibilidade dos modelos locais — não explicações causais, nem reprodução garantida do experimento. Probabilidades não calibradas não devem ser lidas como confiança ou chance de acerto.
 
@@ -63,9 +56,9 @@ API FastAPI ── Redis / RQ ── worker de análise
 - **Persistência:** PostgreSQL no Compose; a camada de serviço também tem contratos para SQLite em testes.
 - **Ambiente local:** Docker Compose com serviços de banco, fila, migração, API, worker, limpeza e web. Só o web é publicado no host, preso a `127.0.0.1` por padrão.
 
-## Início rápido com Docker
+## Executar o projeto
 
-Requisitos: Docker Engine com o plugin `docker compose` e espaço para construir as imagens e processar capturas. Na raiz do repositório:
+Requisitos: Docker Engine, `docker compose` e `make`. Na raiz do repositório, prepare o ambiente uma vez:
 
 ```sh
 cp .env.example .env
@@ -73,36 +66,38 @@ cp .env.example .env
 
 Edite `.env`: substitua `POSTGRES_PASSWORD` e `RAIOX_RATE_SECRET` por valores fortes e únicos. Mantenha a senha igual na URL `DATABASE_URL`; codifique caracteres reservados na URL. Não compartilhe nem versione esse arquivo.
 
+Para iniciar **frontend, API, worker, PostgreSQL e Redis juntos**, com os logs no terminal:
+
 ```sh
-docker compose up -d --build
+make run
 ```
 
-Abra [http://127.0.0.1:3000](http://127.0.0.1:3000). Para acompanhar os serviços:
+Abra o **frontend em [http://127.0.0.1:3000](http://127.0.0.1:3000)**. Se alterar `WEB_PORT` no `.env`, use `make url` para ver a URL correta. O navegador fala com a API pelo proxy `/api` do Next.js; `API_URL=http://api:8000` é um endereço interno entre containers e não é a URL do frontend. O Compose executa a migração antes da API e do worker. `Ctrl+C` encerra a execução em primeiro plano sem apagar os volumes.
+
+Para trabalhar com os containers em segundo plano:
+
+```sh
+make up     # sobe tudo e mostra a URL do frontend
+make ps     # mostra o estado dos serviços
+make logs   # acompanha os logs
+make down   # encerra sem apagar os dados persistidos
+```
+
+`make run` e `make up` usam `docker compose up --build`; também é possível executar `docker compose up -d --build` diretamente. A primeira construção pode demorar por causa das dependências de inferência. Se o front não abrir, confira `make ps` e `make logs` para identificar qual serviço não iniciou.
 
 O envio aceita `.pcap` e `.pcapng` individuais ou um `.zip` com até 20 capturas desses formatos. O arquivo enviado tem limite de 200 MB; as capturas descompactadas somadas, 500 MB. Cada ZIP cria uma nova análise combinada (não altera uma análise anterior). O painel reúne os palpites por fluxo, sem inventar uma linha do tempo comum entre arquivos. Até 2.000 fluxos são guardados e 500 recebem palpites; se o limite for atingido, o painel avisa que o resultado é parcial.
 
-```sh
-docker compose ps
-docker compose logs -f web api worker
-```
-
-Para encerrar os serviços sem apagar os dados persistidos:
-
-```sh
-docker compose down
-```
-
-O Compose executa a migração antes de iniciar os consumidores da API. A limpeza remove análises expiradas e arquivos temporários órfãos. O limite de criação é de 10 análises por IP por hora; sem segredo de rate limit ou sem Redis, a criação falha fechada.
+A limpeza remove análises expiradas e arquivos temporários órfãos. O limite de criação é de 10 análises por IP por hora; sem segredo de rate limit ou sem Redis, a criação falha fechada.
 
 ## Desenvolvimento e testes
 
-O frontend pode ser executado separadamente após instalar as dependências do projeto:
+Para editar o frontend com recarga automática, tenha Node.js e npm instalados e use o modo de desenvolvimento. Ele sobe API, worker, banco e Redis em containers, publica a API somente em `127.0.0.1:8000` e inicia o Next.js no host:
 
 ```sh
-cd web
-npm ci
-npm run dev
+make dev
 ```
+
+Nesse modo, o frontend continua em [http://127.0.0.1:3000](http://127.0.0.1:3000). O `make dev` instala as dependências de `web/` na primeira execução. `Ctrl+C` encerra o Next.js; execute `make down` para parar também os serviços em container. Para voltar ao ambiente integralmente em containers, use `make run`.
 
 O typecheck do frontend é executado com `npm run typecheck` dentro de `web/`. Os contratos automatizados do backend e do projeto podem ser executados pelo runner:
 

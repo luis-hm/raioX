@@ -374,7 +374,7 @@ class TestRaioXInterface(unittest.TestCase):
         readme = (ROOT / "docs" / "SISTEMA.md").read_text(encoding="utf-8")
         self.assertIn("implantação, DNS e proxy ainda não foram validados", readme)
         self.assertIn("Cinco exemplos (um por classe)", readme)
-        self.assertIn("primeiro fluxo principal de cada classe", readme)
+        self.assertIn("entre os que estiveram no treino N do menor número de sementes", readme)
         self.assertIn("esses arquivos não vieram no ZIP", readme)
         self.assertIn("nenhum deploy foi executado", readme)
         self.assertIn("o protocolo foi aprovado", readme)
