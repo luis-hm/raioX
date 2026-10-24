@@ -50,6 +50,7 @@ class ResumoSemente(Publico):
     concordancia: dict[str, int] = Field(default_factory=dict)
     concordancia_pares: dict[str, ConcordanciaPar] = Field(default_factory=dict)
     serie_temporal: list[PontoTemporal] = Field(default_factory=list)
+    exemplo_no_treino: bool | None = None
 
 
 class StatusAnalise(Publico):

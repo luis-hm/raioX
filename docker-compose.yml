@@ -50,7 +50,6 @@ services:
     restart: "no"
 
   api:
-    build: *api_build
     image: raiox-api:local
     environment: *python_environment
     volumes: &upload_mount
@@ -70,7 +69,6 @@ services:
     networks: *private_network
 
   worker:
-    build: *api_build
     image: raiox-api:local
     environment: *python_environment
     volumes: *upload_mount
@@ -85,7 +83,6 @@ services:
     networks: *private_network
 
   limpeza:
-    build: *api_build
     image: raiox-api:local
     environment: *python_environment
     volumes: *upload_mount

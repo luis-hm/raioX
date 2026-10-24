@@ -49,11 +49,13 @@ function FlowDetailsContent({ id, n }: { id: string; n: number }) {
     </header>
     {!flow.principal || flow.pacotes.length < 3
       ? <Card title="Fluxo sem explicação"><p>Os modelos explicam fluxos principais com pelo menos três pacotes guardados.</p></Card>
-      : <LiveXRay id={id} flow={flow} origin={analysis.origem} />}
+      : <LiveXRay id={id} flow={flow} origin={analysis.origem} resumos={analysis.resumo_por_semente} />}
   </div>;
 }
 
-function LiveXRay({ id, flow, origin }: { id: string; flow: FluxoDetalhe; origin: StatusAnalise["origem"] }) {
+function LiveXRay({ id, flow, origin, resumos }: {
+  id: string; flow: FluxoDetalhe; origin: StatusAnalise["origem"]; resumos: StatusAnalise["resumo_por_semente"];
+}) {
   const [seed, setSeed] = useState<Seed>(0);
   const [explanation, setExplanation] = useState<ExplicacaoFluxo | null>(null);
   const [error, setError] = useState<{ seed: Seed; message: string } | null>(null);
@@ -81,6 +83,8 @@ function LiveXRay({ id, flow, origin }: { id: string; flow: FluxoDetalhe; origin
   const currentError = error?.seed === seed ? error.message : null;
   return <>
     {currentError && <p role="alert" className="ui-card">{currentError}</p>}
+    {resumos[String(seed)]?.exemplo_no_treino && <p role="note" className="ui-card text-sm">
+      Na semente {seed}, este fluxo de exemplo fez parte do treino dos modelos. Os palpites nesta semente não indicam como eles se sairiam num fluxo novo; o estudo só mediu desempenho no conjunto de teste.</p>}
     <FlowXRay data={data} seed={seed} onSeedChange={setSeed}
       status={currentError ? "error" : data ? "ready" : "loading"}
       onRetry={() => { cache.current.delete(seed); setAttempt(value => value + 1); }} />

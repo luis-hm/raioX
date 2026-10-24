@@ -50,7 +50,7 @@ Como visitante sem uma captura própria, quero abrir cinco exemplos já extraíd
 |---|---|---|---|
 | ASM-005 | O usuário autorizou seguir com os classificadores locais e destacar suas divergências da referência. | confirmada | Ordem explícita para executar o plano; divergências B1 60/5.356 e B2/P 2.063/10.712 estão publicadas no README e nos manifests. |
 | ASM-006 | O comando usará artefatos locais em `artefatos/n_s0..n_s4`, sem download automático. | confirmada | Os 15 artefatos ONNX/Joblib e normalizações estão versionados no workspace. |
-| ASM-007 | Os cinco exemplos serão o primeiro fluxo principal de cada classe na ordem do conjunto, evitando seleção por desempenho do classificador. | confirmada | Regra determinística proposta para reduzir cherry-picking; a biblioteca preservará arquivo/sessão/aplicação como proveniência. |
+| ASM-007 | Os cinco exemplos serão, em cada classe, o primeiro fluxo principal na ordem do conjunto entre os que estiveram no treino N do menor número de sementes, sem seleção por desempenho do classificador. | confirmada | Revisada em 24/10/2026: a regra anterior (primeiro fluxo de cada classe) usava cinco fluxos de treino da semente 0, contra a divisão por sessão do estudo. Streaming não tem fluxo fora do treino em todas as sementes; o escolhido foi treino só na semente 3, registrado em `sementes_no_treino`. |
 
 ## Perguntas em aberto
 

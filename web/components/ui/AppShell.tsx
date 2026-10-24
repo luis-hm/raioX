@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
@@ -15,7 +16,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       <header className="app-topbar">
         <div className="app-container app-topbar__inner">
           <Link className="app-logo" href="/" aria-label="Raio-X do Tráfego, início">
-            <span className="app-logo__mark" aria-hidden="true">◇ </span>Raio-X do Tráfego
+            <Image className="app-logo__mark" src="/brand/raio-x-symbol.svg" alt="" width={40} height={40} unoptimized />
+            <span className="app-logo__name">Raio-X <span className="app-logo__tail">do Tráfego</span></span>
           </Link>
           <nav className="app-nav" aria-label="Navegação principal">
             <Link className="app-nav__link" href="/" aria-current={pathname === "/" ? "page" : undefined}>Início</Link>

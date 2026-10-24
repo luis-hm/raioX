@@ -269,11 +269,26 @@ def exportar_modelos(experimento, modelos_dir, saida, sementes=range(5)):
     return relatorio
 
 
+def macro_f1_estudo(resultados=Path(__file__).resolve().parents[1] / "resultados_referencia" / "resultados.csv"):
+    """Macro-F1 publicado em C1 (N, 100%), por método e semente."""
+    with Path(resultados).open(encoding="utf-8", newline="") as f:
+        return {(r["metodo"], int(r["semente"])): float(r["macro_f1"])
+                for r in csv.DictReader(f) if r["cenario"] == "C1"}
+
+
 def comparar_artefatos_referencia(experimento, artefatos, sementes=range(5)):
-    """Avalia os artefatos publicados contra as previsões do estudo, sem treinar."""
+    """Avalia os artefatos publicados contra as previsões e o macro-F1 do estudo, sem treinar."""
     import onnxruntime as ort
 
     experimento, artefatos = Path(experimento), Path(artefatos)
+    estudo = macro_f1_estudo()
+
+    def avaliar(metodo, seed, y, pred):
+        # Mesma métrica principal do relatório, no mesmo teste e na mesma semente.
+        return {**comparar(experimento, metodo, seed, y, pred),
+                "macro_f1_local": metricas(y, pred)["macro_f1"],
+                "macro_f1_estudo": estudo[(metodo, seed)]}
+
     relatorio = []
     for seed in sementes:
         d = carregar(experimento, seed)
@@ -284,14 +299,14 @@ def comparar_artefatos_referencia(experimento, artefatos, sementes=range(5)):
         b1 = joblib.load(pasta / "b1.joblib")
         pred_b1 = b1.predict(feats_rf(d["Xte"]))
         relatorio.append({"metodo": "B1", "semente": seed,
-                          **comparar(experimento, "B1", seed, d["yte"], pred_b1)})
+                          **avaliar("B1", seed, d["yte"], pred_b1)})
         xte = np.ascontiguousarray(d["Xte"], dtype=np.float32)
         for metodo in ("B2", "P"):
             sessao = ort.InferenceSession(str(pasta / f"{metodo.lower()}.onnx"),
                                           providers=["CPUExecutionProvider"])
             pred = sessao.run(["logits"], {"matrizes": xte})[0].argmax(1)
             relatorio.append({"metodo": metodo, "semente": seed,
-                              **comparar(experimento, metodo, seed, d["yte"], pred)})
+                              **avaliar(metodo, seed, d["yte"], pred)})
     return relatorio
 
 
@@ -346,7 +361,17 @@ def main():
     parser.add_argument("--saida", type=Path, required=True)
     parser.add_argument("--sementes", type=int, nargs="+", default=list(range(5)))
     parser.add_argument("--metodos", nargs="+", default=["B1", "B2", "P"])
+    parser.add_argument("--avaliar-artefatos", type=Path,
+                        help="Não treina: compara artefatos exportados com previsões e macro-F1 do estudo")
     args = parser.parse_args()
+    if args.avaliar_artefatos:
+        registros = comparar_artefatos_referencia(args.experimento, args.avaliar_artefatos, args.sementes)
+        args.saida.mkdir(parents=True, exist_ok=True)
+        (args.saida / "desempenho.json").write_text(json.dumps(registros, indent=2), encoding="utf-8")
+        for r in registros:
+            print(f"{r['metodo']} s{r['semente']}: macro-F1 local {r['macro_f1_local']:.3f} · "
+                  f"estudo {r['macro_f1_estudo']:.3f} · {r['divergencias']}/{r['n_teste']} previsões diferentes")
+        return
     registros = executar(args.experimento, args.saida, args.sementes, args.metodos)
     if any(not r["previsoes_iguais"] for r in registros):
         raise SystemExit("Previsões divergentes: confira comparacao.json")

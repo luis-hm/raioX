@@ -1,0 +1,152 @@
+[
+  {
+    "metodo": "B1",
+    "semente": 0,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_B1_frac100_seed0.npz",
+    "n_teste": 1050,
+    "divergencias": 13,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.564541329395896,
+    "macro_f1_estudo": 0.560118140602448
+  },
+  {
+    "metodo": "B2",
+    "semente": 0,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_B2_frac100_seed0.npz",
+    "n_teste": 1050,
+    "divergencias": 133,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.4047340049552929,
+    "macro_f1_estudo": 0.3500946823638257
+  },
+  {
+    "metodo": "P",
+    "semente": 0,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_P_frac100_seed0.npz",
+    "n_teste": 1050,
+    "divergencias": 82,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.5949999036681679,
+    "macro_f1_estudo": 0.6094180614056611
+  },
+  {
+    "metodo": "B1",
+    "semente": 1,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_B1_frac100_seed1.npz",
+    "n_teste": 1337,
+    "divergencias": 16,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.514797560869835,
+    "macro_f1_estudo": 0.5193063132753079
+  },
+  {
+    "metodo": "B2",
+    "semente": 1,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_B2_frac100_seed1.npz",
+    "n_teste": 1337,
+    "divergencias": 633,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.5542328492392576,
+    "macro_f1_estudo": 0.4445342784896636
+  },
+  {
+    "metodo": "P",
+    "semente": 1,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_P_frac100_seed1.npz",
+    "n_teste": 1337,
+    "divergencias": 155,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.5072222793003853,
+    "macro_f1_estudo": 0.5368087464086883
+  },
+  {
+    "metodo": "B1",
+    "semente": 2,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_B1_frac100_seed2.npz",
+    "n_teste": 970,
+    "divergencias": 18,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.5490008076016921,
+    "macro_f1_estudo": 0.5418891457422093
+  },
+  {
+    "metodo": "B2",
+    "semente": 2,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_B2_frac100_seed2.npz",
+    "n_teste": 970,
+    "divergencias": 199,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.4450344666450253,
+    "macro_f1_estudo": 0.4051520239578911
+  },
+  {
+    "metodo": "P",
+    "semente": 2,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_P_frac100_seed2.npz",
+    "n_teste": 970,
+    "divergencias": 292,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.4627735768174831,
+    "macro_f1_estudo": 0.4419018673890391
+  },
+  {
+    "metodo": "B1",
+    "semente": 3,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_B1_frac100_seed3.npz",
+    "n_teste": 939,
+    "divergencias": 6,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.5876446674100939,
+    "macro_f1_estudo": 0.586076817216652
+  },
+  {
+    "metodo": "B2",
+    "semente": 3,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_B2_frac100_seed3.npz",
+    "n_teste": 939,
+    "divergencias": 164,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.5178968853234076,
+    "macro_f1_estudo": 0.4818847706773651
+  },
+  {
+    "metodo": "P",
+    "semente": 3,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_P_frac100_seed3.npz",
+    "n_teste": 939,
+    "divergencias": 155,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.4479729724185318,
+    "macro_f1_estudo": 0.4489559425397969
+  },
+  {
+    "metodo": "B1",
+    "semente": 4,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_B1_frac100_seed4.npz",
+    "n_teste": 1060,
+    "divergencias": 7,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.5012283796698753,
+    "macro_f1_estudo": 0.5000280855027824
+  },
+  {
+    "metodo": "B2",
+    "semente": 4,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_B2_frac100_seed4.npz",
+    "n_teste": 1060,
+    "divergencias": 156,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.43859880588409234,
+    "macro_f1_estudo": 0.4544822731874222
+  },
+  {
+    "metodo": "P",
+    "semente": 4,
+    "referencia": "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego/resultados/previsoes/C1_N_P_frac100_seed4.npz",
+    "n_teste": 1060,
+    "divergencias": 94,
+    "previsoes_iguais": false,
+    "macro_f1_local": 0.4568938897912627,
+    "macro_f1_estudo": 0.4391411200207814
+  }
+]

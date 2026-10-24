@@ -75,13 +75,15 @@ a { color: inherit; }
 .app-shell { min-width: 0; min-height: 100vh; }
 .app-container { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: max(16px, env(safe-area-inset-left), env(safe-area-inset-right)); }
 .app-topbar { border-bottom: 1px solid var(--border); background: var(--surface-glass); }
-.app-topbar__inner { display: flex; min-height: 64px; flex-wrap: wrap; align-items: center; gap: 16px; padding-block: 12px; }
-.app-logo { flex: 0 0 auto; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; text-decoration: none; }
-.app-logo__mark { color: var(--accent); }
-.app-nav { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; gap: 8px; margin-inline-start: auto; }
+.app-topbar__inner { display: flex; min-height: 72px; flex-wrap: wrap; align-items: center; gap: 16px; padding-block: 12px; }
+.app-logo { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 10px; color: var(--text); font-size: 20px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.1; text-decoration: none; }
+.app-logo__mark { display: block; width: 40px; height: 40px; flex: 0 0 auto; }
+.app-logo__name { white-space: nowrap; }
+.app-logo__tail { color: var(--text-muted); font-weight: 600; }
+.app-nav { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; gap: 4px; margin-inline-start: auto; }
 .app-nav__link { display: inline-flex; min-height: 40px; align-items: center; border-radius: var(--radius-control); padding-inline: 12px; color: var(--text-muted); font-size: 14px; text-decoration: none; }
 .app-nav__link:hover { background: var(--surface-2); color: var(--text); }
-.app-nav__link[aria-current="page"] { background: var(--accent); color: var(--bg); font-weight: 600; }
+.app-nav__link[aria-current="page"] { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); font-weight: 600; }
 .app-main { min-width: 0; padding-block: 32px 64px; }
 .app-footer { border-top: 1px solid var(--border); padding-block: 20px; color: var(--text-muted); font-size: 12px; }
 .app-footer__inner { display: flex; flex-wrap: wrap; gap: 8px 24px; }
@@ -130,7 +132,8 @@ a { color: inherit; }
 .ui-table__action { color: var(--accent); font-weight: 600; white-space: nowrap; }
 
 @media (max-width: 639px) {
-  .app-topbar__inner { align-items: flex-start; }
+  .app-topbar__inner { align-items: center; gap: 8px; }
+  .app-logo { font-size: 18px; }
   .app-nav { width: 100%; margin-inline-start: 0; }
   .app-nav__link { padding-inline: 8px; }
   .app-main { padding-block: 24px 48px; }
