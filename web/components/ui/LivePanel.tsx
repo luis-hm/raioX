@@ -60,9 +60,14 @@ export function LivePanel({ analysis, tab }: { analysis: StatusAnalise; tab: "ge
       <h1 className="display text-[clamp(32px,4.4vw,56px)]">{analysis.nome_exibicao || (isZip ? "Um painel para todo o lote." : "O que há nesta captura.")}</h1>
     </div><Link className="ui-button ui-button--secondary" href="/enviar">Nova análise</Link></header>
 
+    <div className="border-l-[3px] border-teal-ink bg-surface-2 px-4 py-3 text-sm leading-relaxed text-text-muted" role="note">
+      <strong className="text-text">Este painel mostra palpites para o seu {isZip ? "ZIP" : "arquivo"}.</strong>{" "}
+      Como não sabemos a categoria verdadeira de cada fluxo, não há nota de acerto aqui. As cinco sementes são versões do treino; estabilidade 5/5 significa o mesmo palpite nas cinco, não certeza. Os gráficos de <Link className="font-semibold text-teal-ink underline underline-offset-2" href="/resultados">resultados do estudo</Link> usam capturas com categorias atribuídas e medem o desempenho dos modelos naquele teste.
+    </div>
+
     <section className="grid border-t border-ink sm:grid-cols-3" aria-label="Resultado em números">
       <div className="grid gap-1 py-5 pr-5"><span className="eyebrow">Fluxos analisados</span><strong className="font-mono text-stat font-medium">{formatNumber(total)}</strong><span className="text-xs text-slate">com palpites dos 3 modelos</span></div>
-      <div className="grid gap-1 border-line py-5 sm:border-l sm:px-5"><span className="eyebrow">Modelos discordam</span><strong className="font-mono text-stat font-medium text-warn">{formatNumber(discord)}</strong><span className="text-xs text-slate">fluxos para investigar</span></div>
+      <div className="grid gap-1 border-line py-5 sm:border-l sm:px-5"><span className="eyebrow">Modelos discordam</span><strong className="font-mono text-stat font-medium text-warn">{formatNumber(discord)}</strong><span className="text-xs text-slate">palpites diferentes para o mesmo fluxo</span></div>
       <div className="grid gap-1 border-line py-5 sm:border-l sm:pl-5"><span className="eyebrow">Concordam nos três</span><strong className="font-mono text-stat font-medium">{agreement}</strong><span className="text-xs text-slate">concordância não é acerto</span></div>
     </section>
     {(analysis.n_fluxos_extras > 0 || analysis.motivo_parada === "teto_de_fluxos" || analysis.motivo_parada === "limite_de_pacotes") &&

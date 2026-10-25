@@ -118,7 +118,7 @@ export function AnaliseAoVivo({ dados }: { dados: DadosAoVivo }) {
     <header className={`app-container ${s.head}`}>
       <div>
         <p className="eyebrow">Análise · ISCX VPN-nonVPN · {fmt(dados.totais.capturas)} capturas · {dados.totais.tamanho_gb.toLocaleString("pt-BR")} GB</p>
-        <h1 className={`display ${s.title}`}>{concluida ? "Análise concluída." : `${FASES[fase]?.titulo}…`}</h1>
+        <h1 className={`display ${s.title}`}>{concluida ? "Reprodução concluída." : `${FASES[fase]?.titulo}…`}</h1>
       </div>
       <div className={s.status} role="status" aria-live="polite">
         <span className={concluida ? s.dotDone : s.dotLive} />
@@ -178,13 +178,14 @@ export function AnaliseAoVivo({ dados }: { dados: DadosAoVivo }) {
             <div className={s.binDrops}>{dados.amostra.slice(0, classificados).filter(f => f.palpites.P === c).map((f, i) =>
               <i key={i} title={`rótulo: ${NOME[f.rotulo]}`} style={{ ["--c" as string]: COR[f.rotulo] }} data-ok={f.rotulo === c || undefined} />)}</div>
           </div>)}</div>
-          <p className={s.stageNote}>Cada quadrado é um fluxo de teste na coluna que o P previu. Cheio: acertou a categoria da captura; só contorno: errou, e a cor mostra a categoria real.</p>
+          <p className={s.stageNote}>Cada quadrado é um fluxo de teste na coluna que o P previu. Cheio: o palpite bateu com a categoria atribuída à captura; só contorno: foi diferente, e a cor mostra essa categoria. As barras acima contam acertos apenas nesta amostra, não são o macro-F1 do estudo.</p>
         </div>}
       </section>
 
       <aside className={s.side}>
         {concluida && <div className={s.done}>
-          <p className="eyebrow">Macro-F1 médio no teste · 100% dos rótulos · 5 sementes</p>
+          <p className="eyebrow">Resultado do teste completo · 5 versões de treino</p>
+          <p className={s.doneHelp}>Macro-F1 vai de 0 a 1; quanto maior, melhor o desempenho equilibrado entre as cinco categorias. É a média de cinco treinamentos, não a pontuação do seu ZIP.</p>
           <div className={s.doneScores}>{(["B1", "B2", "P"] as const).map(m => <span key={m}><span className={`ui-chip ui-chip--${m.toLowerCase()}`}>{m}</span>
             <strong className="font-mono">{dados.macroF1[m].toLocaleString("pt-BR", { minimumFractionDigits: 3, maximumFractionDigits: 3 })}</strong></span>)}</div>
           <Link href="/resultados" className="ui-button ui-button--primary">Abrir resultados <span className="ui-button__arrow" aria-hidden>→</span></Link>

@@ -19,20 +19,42 @@
 .params div { display: grid; grid-template-columns: 170px 1fr; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--line); }
 .params dt { color: var(--slate); font-family: var(--font-plex-mono), monospace; font-size: 11px; letter-spacing: 0.06em; line-height: 22px; text-transform: uppercase; }
 .params dd { margin: 0; font-size: 15px; }
-.channels, .methods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--line); background: var(--line); }
-.methods { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.channels > div, .methods > div { display: grid; align-content: start; gap: 8px; padding: 18px; background: var(--paper); }
+.channels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; border: 1px solid var(--line); background: var(--line); }
+.channels > div { display: grid; align-content: start; gap: 8px; padding: 18px; background: var(--paper); }
 .channels span { color: var(--teal-ink); font-size: 11px; }
-.channels strong, .methods strong { font-size: 16px; font-weight: 650; }
-.channels p, .methods p { color: var(--slate) !important; font-size: 14px !important; line-height: 1.55 !important; }
-.methods span { justify-self: start; }
+.channels strong { font-size: 16px; font-weight: 650; }
+.channels p { color: var(--slate) !important; font-size: 14px !important; line-height: 1.55 !important; }
+.methods { display: grid; border-top: 1px solid var(--ink); }
+.method { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--line); }
+.methodHead { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; align-self: start; padding-left: 14px; border-left: 3px solid var(--b1); }
+.method[data-method="b2"] .methodHead { border-color: var(--b2); }
+.method[data-method="p"] .methodHead { border-color: var(--p); }
+.methodHead h3 { font-size: 20px; font-weight: 650; line-height: 1.2; }
+.methodHead > span:last-child { color: var(--slate); font-size: 13px; line-height: 1.4; }
+.methodBody { display: grid; gap: 16px; min-width: 0; }
+.methodBody > p { color: var(--ink-2); font-size: 16px; line-height: 1.6; }
+.methodFacts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin: 0; }
+.methodFacts > div { border-top: 1px solid var(--line); padding-top: 10px; }
+.methodFacts dt { color: var(--slate); font-family: var(--font-plex-mono), monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+.methodFacts dd { margin: 6px 0 0; color: var(--ink-2); font-size: 14px; line-height: 1.55; }
+.methodSpecs { border-top: 1px solid var(--line); padding-top: 12px; }
+.methodSpecs summary { width: fit-content; cursor: pointer; color: var(--teal-ink); font-size: 14px; font-weight: 650; }
+.methodSpecs summary:focus-visible { outline: 2px solid var(--teal-ink); outline-offset: 3px; }
+.methodSpecs p { margin-top: 12px; color: var(--slate); font-size: 14px; line-height: 1.6; }
+.methodSpecs code { font-family: var(--font-plex-mono), monospace; font-size: 0.9em; }
+.trainingChoice { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 24px; padding: 22px; background: var(--paper-2); }
+.trainingChoice h3 { margin-top: 8px; font-size: 19px; line-height: 1.3; }
+.trainingChoice > div:last-child { display: grid; gap: 12px; }
+.trainingChoice p { font-size: 14px; line-height: 1.6; }
+.trainingChoice .methodSpecs { border-color: var(--line-strong); }
 .list { display: grid; gap: 10px; margin: 0; padding-left: 20px; color: var(--ink-2); line-height: 1.6; }
 @media (max-width: 1023px) {
   .layout { grid-template-columns: minmax(0, 1fr); }
   .toc { display: none; }
-  .methods { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 639px) {
   .channels { grid-template-columns: minmax(0, 1fr); }
   .params div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .method, .trainingChoice { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .methodFacts { grid-template-columns: minmax(0, 1fr); gap: 12px; }
 }

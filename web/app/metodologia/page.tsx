@@ -86,16 +86,56 @@ export default function Page() {
         </section>
 
         <section id="metodos"><h2>Os três métodos</h2>
+          <p>Os três tentam classificar um fluxo como chat, e-mail, transferência, streaming ou VoIP. Ao classificar, partem da mesma matriz de pacotes; o que muda é a forma de encontrar padrões e de aprender com os dados.</p>
           <div className={s.methods}>
-            <div><span className="ui-chip ui-chip--b1">B1</span><strong>Random Forest</strong><p>300 árvores, max_features √, classes balanceadas, sobre 11 estatísticas
-              do fluxo: contagem; média, desvio, mínimo e máximo de tamanho e de intervalo; soma de tamanhos e de intervalos. Não usa a direção.</p></div>
-            <div><span className="ui-chip ui-chip--b2">B2</span><strong>CNN 1D</strong><p>Três blocos Conv1D (4 → 64 → 128 → 128, kernel 3, BatchNorm, ReLU), média global e cabeça
-              linear com dropout 0,3. AdamW (1e-3), entropia cruzada ponderada, lote de até 256 e número fixo de passos, sem parada antecipada.</p></div>
-            <div><span className="ui-chip ui-chip--p">P</span><strong>CNN 1D + pré-treino</strong><p>Antes do ajuste, o encoder aprende a reconstruir 15% dos pacotes escondidos
-              (30 épocas, lote 512, erro quadrático só nas posições mascaradas), sem rótulos e só com o treino. Depois, ajuste fino idêntico ao do B2.</p></div>
+            <article className={s.method} data-method="b1">
+              <header className={s.methodHead}><span className="ui-chip ui-chip--b1">B1</span><h3>Random Forest</h3><span>Um resumo do fluxo</span></header>
+              <div className={s.methodBody}>
+                <p>Converte os primeiros pacotes em 11 medidas e combina as decisões de 300 árvores para escolher uma categoria.</p>
+                <dl className={s.methodFacts}>
+                  <div><dt>O que observa</dt><dd>Quantidade de pacotes, tamanhos e intervalos. A direção dos pacotes fica de fora.</dd></div>
+                  <div><dt>Como aprende</dt><dd>Usa fluxos com categoria conhecida e dá mais peso às categorias menos frequentes.</dd></div>
+                </dl>
+                <details className={s.methodSpecs}><summary>Detalhes técnicos do B1</summary>
+                  <p>Random Forest com 300 árvores, <code>max_features=&quot;sqrt&quot;</code> e classes balanceadas. As 11 medidas são: contagem; média, desvio, mínimo e máximo dos tamanhos e dos intervalos; soma dos tamanhos e dos intervalos.</p>
+                </details>
+              </div>
+            </article>
+            <article className={s.method} data-method="b2">
+              <header className={s.methodHead}><span className="ui-chip ui-chip--b2">B2</span><h3>CNN 1D</h3><span>A sequência dos pacotes</span></header>
+              <div className={s.methodBody}>
+                <p>Lê a sequência dos primeiros 32 pacotes e aprende padrões de tamanho, direção e tempo entre pacotes.</p>
+                <dl className={s.methodFacts}>
+                  <div><dt>O que observa</dt><dd>A matriz 32 × 4, que preserva a ordem dos pacotes e indica as posições vazias.</dd></div>
+                  <div><dt>Como aprende</dt><dd>Começa sem conhecimento prévio e ajusta a rede com fluxos de categoria conhecida.</dd></div>
+                </dl>
+                <details className={s.methodSpecs}><summary>Detalhes técnicos do B2</summary>
+                  <p>Três blocos Conv1D (4 → 64 → 128 → 128, kernel 3, BatchNorm e ReLU), média global e camada final com dropout 0,3. Treino com AdamW (1e-3), entropia cruzada ponderada, lotes de até 256 e número fixo de passos, sem parada antecipada.</p>
+                </details>
+              </div>
+            </article>
+            <article className={s.method} data-method="p">
+              <header className={s.methodHead}><span className="ui-chip ui-chip--p">P</span><h3>CNN 1D + pré-treino</h3><span>Aprende antes de receber os rótulos</span></header>
+              <div className={s.methodBody}>
+                <p>Usa a mesma rede do B2. Primeiro esconde parte dos pacotes e tenta completar as lacunas; depois aprende as cinco categorias com os rótulos.</p>
+                <dl className={s.methodFacts}>
+                  <div><dt>Antes</dt><dd>Reconstrói tamanho, direção e intervalo de cerca de 15% dos pacotes presentes, sem consultar categorias.</dd></div>
+                  <div><dt>Depois</dt><dd>Ajusta toda a rede com os mesmos exemplos rotulados e as mesmas regras de treino do B2.</dd></div>
+                </dl>
+                <details className={s.methodSpecs}><summary>Detalhes técnicos do P</summary>
+                  <p>O pré-treino usa apenas dados de treino, por 30 épocas em lotes de até 512. O erro quadrático é calculado só nos pacotes escondidos. A parte de reconstrução é descartada; o ajuste para classificação segue o B2.</p>
+                </details>
+              </div>
+            </article>
           </div>
-          {exp && <p className={s.note}>A única escolha feita com dados foi o número de passos do ajuste, na validação de C1 (sementes 0–2): o menor número de passos a até 0,01 do melhor macro-F1 médio.
-            Escolhidos: <b className="font-mono">{n(exp.passos.escolhidos)}</b> ({exp.passos.curva.map(c => `${n(c.passos)}: ${c.mean.toLocaleString("pt-BR", { maximumFractionDigits: 3 })}`).join(" · ")}). O teste nunca foi usado para escolher nada.</p>}
+          <div className={s.trainingChoice}>
+            <div><span className="eyebrow">Treino das CNNs</span><h3>O que são os passos?</h3></div>
+            <div><p>Um passo é uma atualização da rede com um lote de fluxos.{exp ? ` Nesta execução, B2 e P usaram ${n(exp.passos.escolhidos)} passos.` : ""} O número foi escolhido pela validação de C1 nas sementes 0–2: o menor valor que ficou a até 0,01 do melhor macro-F1 médio. O conjunto de teste só foi usado depois, para medir o resultado final.</p>
+              {exp && <details className={s.methodSpecs}><summary>Ver pontuações usadas na escolha de {n(exp.passos.escolhidos)} passos</summary>
+                <p>{exp.passos.curva.map(c => `${n(c.passos)} passos: ${c.mean.toLocaleString("pt-BR", { maximumFractionDigits: 3 })}`).join(" · ")}.</p>
+              </details>}
+            </div>
+          </div>
         </section>
 
         <section id="cenarios"><h2>Cenários</h2>
