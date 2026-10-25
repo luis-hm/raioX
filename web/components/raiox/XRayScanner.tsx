@@ -109,6 +109,8 @@ export function XRayScanner({ fluxos, faixas = 5, velocidade = 1, className = ""
 
       const velPx = W * 0.15 * vel.current;
       ctx.font = "400 9px 'IBM Plex Mono', monospace";
+      // Uma leitura por vez em cada faixa: pacotes colados não sobrepõem os textos.
+      const rotuloAte = new Array(faixas).fill(-Infinity);
       for (let i = pacotes.length - 1; i >= 0; i--) {
         const p = pacotes[i];
         p.x += velPx * dtSeg;
@@ -138,7 +140,8 @@ export function XRayScanner({ fluxos, faixas = 5, velocidade = 1, className = ""
         if (antes < p.w) {
           const x0 = p.x + antes, larg = p.w - antes;
           ctx.fillStyle = cor; ctx.globalAlpha = 0.9; ctx.fillRect(x0, y - h / 2, larg, h); ctx.globalAlpha = 1;
-          if (antes === 0 && p.x > g.feixe + 6 && p.x < g.matriz - 90) {
+          if (antes === 0 && p.x > g.feixe + 6 && p.x < g.matriz - 90 && p.x > rotuloAte[p.faixa]) {
+            rotuloAte[p.faixa] = p.x + 64;
             ctx.fillStyle = COR.texto; ctx.textBaseline = "alphabetic";
             ctx.fillText(`${p.dir > 0 ? "↑" : "↓"} ${p.bytes} B`, p.x, y - h / 2 - 4);
             ctx.fillStyle = COR.mudo;
