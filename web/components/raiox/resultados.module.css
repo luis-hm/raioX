@@ -3,6 +3,11 @@
 .title { font-size: clamp(36px, 5.2vw, 68px); }
 .lead { max-width: 70ch; color: var(--ink-2); font-size: 17px; }
 .lead b { font-weight: 500; }
+.glossary { margin-bottom: 44px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; }
+.glossary summary, .evidence summary, .fullTests summary { width: fit-content; cursor: pointer; color: var(--teal-ink); font-size: 14px; font-weight: 650; }
+.glossary dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 28px; margin: 18px 0 0; }
+.glossary dt { color: var(--ink); font-weight: 650; }
+.glossary dd { margin: 3px 0 0; color: var(--ink-2); font-size: 13px; line-height: 1.5; }
 
 .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--line); }
 .card { display: grid; align-content: start; gap: 10px; padding: 22px 20px 24px 0; }
@@ -13,13 +18,17 @@
 .card ul { display: grid; gap: 4px; margin: 4px 0 0; padding: 0; list-style: none; color: var(--ink-2); font-size: 12px; }
 .card small { color: var(--slate); font-size: 12px; }
 .card[data-ok] h2 { color: var(--ok); }
+.evidence { border-top: 1px solid var(--line); padding-top: 12px; }
+.evidence p { margin-top: 10px; }
+.evidence small { display: block; margin-top: 10px; }
 
 .block { display: grid; gap: 28px; padding-top: 96px; }
 .blockHead { display: grid; gap: 12px; max-width: 760px; }
 .blockHead h2 { font-size: clamp(28px, 3.4vw, 44px); }
 .blockHead p { color: var(--slate); font-size: 15px; }
+.fullTests { border-top: 1px solid var(--line); padding-top: 16px; }
+.fullTests > div { margin-top: 18px; }
 .duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
-.note { color: var(--slate); font-size: 14px; }
 
 .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--ink); }
 .stats > div { display: grid; align-content: start; gap: 6px; padding: 20px 20px 4px 0; }
@@ -44,6 +53,7 @@
   .duo { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 639px) {
+  .glossary dl { grid-template-columns: minmax(0, 1fr); }
   .cards, .stats { grid-template-columns: minmax(0, 1fr); }
   .card + .card, .stats > div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
   .block { padding-top: 64px; }
