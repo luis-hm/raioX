@@ -21,7 +21,7 @@ from core.zip_capturas import listar_capturas
 
 MODELOS = ("B1", "B2", "P")
 SEMENTES = tuple(range(5))
-VERSAO_MODELOS = "N/100%; sementes 0-4; reconstrução local"
+VERSAO_MODELOS = "N/100%; sementes 0-4; experimento refeito a partir dos pcaps"
 NOME_UPLOAD = re.compile(r"[0-9a-f]{40}\.(?:pcap|pcapng|zip)\Z")
 LOCK_KEY = "raiox:worker:lock:v1"
 LOCK_SECONDS = 360

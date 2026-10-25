@@ -51,17 +51,16 @@ export function LivePanel({ analysis, tab }: { analysis: StatusAnalise; tab: "ge
     { key: "stable", header: `Estabilidade ${model}`, cell: flow => typeof flow.estabilidade[model] === "number" ? `${flow.estabilidade[model]}/5` : "—" },
   ];
 
-  return <div className="mx-auto max-w-6xl space-y-5">
-    <header className="ui-card flex flex-wrap items-start justify-between gap-5"><div className="space-y-2">
-      <p className="label-small text-accent">Raio-X do tráfego</p>
-      <h1 className="m-0 text-2xl font-semibold sm:text-3xl">{analysis.nome_exibicao || (isZip ? "Um painel para todo o lote" : "O que há nesta captura?")}</h1>
-      <p className="m-0 text-sm text-text-muted">{isZip ? `${analysis.n_arquivos_zip} capturas no ZIP · resultado combinado` : "Uma captura · resultado exploratório"}</p>
-    </div><Link className="ui-button ui-button--secondary" href="/">Nova análise</Link></header>
+  return <div className="space-y-8">
+    <header className="flex flex-wrap items-end justify-between gap-5"><div className="grid gap-3">
+      <p className="eyebrow">Análise · {isZip ? `${analysis.n_arquivos_zip} capturas no ZIP · resultado combinado` : "uma captura"}</p>
+      <h1 className="display text-[clamp(32px,4.4vw,56px)]">{analysis.nome_exibicao || (isZip ? "Um painel para todo o lote." : "O que há nesta captura.")}</h1>
+    </div><Link className="ui-button ui-button--secondary" href="/enviar">Nova análise</Link></header>
 
-    <section className="grid gap-3 sm:grid-cols-3" aria-label="Resultado em números">
-      <div className="ui-card"><span className="label-small text-text-muted">Fluxos analisados</span><strong className="mt-2 block font-mono text-stat">{formatNumber(total)}</strong><span className="text-xs text-text-muted">com palpites dos 3 modelos</span></div>
-      <div className="ui-card border-warn/40"><span className="label-small text-text-muted">Modelos discordam</span><strong className="mt-2 block font-mono text-stat text-warn">{formatNumber(discord)}</strong><span className="text-xs text-text-muted">fluxos para investigar</span></div>
-      <div className="ui-card"><span className="label-small text-text-muted">Concordam nos três</span><strong className="mt-2 block font-mono text-stat">{agreement}</strong><span className="text-xs text-text-muted">concordância não é acerto</span></div>
+    <section className="grid border-t border-ink sm:grid-cols-3" aria-label="Resultado em números">
+      <div className="grid gap-1 py-5 pr-5"><span className="eyebrow">Fluxos analisados</span><strong className="font-mono text-stat font-medium">{formatNumber(total)}</strong><span className="text-xs text-slate">com palpites dos 3 modelos</span></div>
+      <div className="grid gap-1 border-line py-5 sm:border-l sm:px-5"><span className="eyebrow">Modelos discordam</span><strong className="font-mono text-stat font-medium text-warn">{formatNumber(discord)}</strong><span className="text-xs text-slate">fluxos para investigar</span></div>
+      <div className="grid gap-1 border-line py-5 sm:border-l sm:pl-5"><span className="eyebrow">Concordam nos três</span><strong className="font-mono text-stat font-medium">{agreement}</strong><span className="text-xs text-slate">concordância não é acerto</span></div>
     </section>
     {(analysis.n_fluxos_extras > 0 || analysis.motivo_parada === "teto_de_fluxos" || analysis.motivo_parada === "limite_de_pacotes") &&
       <p className="ui-card border-warn/40 text-sm text-warn" role="note">Resultado parcial: {formatNumber(analysis.n_fluxos_extras)} fluxos ficaram sem classificação{analysis.motivo_parada === "teto_de_fluxos" ? "; o limite de fluxos foi atingido" : analysis.motivo_parada === "limite_de_pacotes" ? "; a leitura atingiu o limite de pacotes" : ""}.</p>}
@@ -72,12 +71,13 @@ export function LivePanel({ analysis, tab }: { analysis: StatusAnalise; tab: "ge
           <div className="flex h-8 overflow-hidden rounded-md bg-surface-2">{CLASSES.map(classKey => {
             const count = summary?.contagens?.[name]?.[classKey] ?? 0;
             return count > 0 && total > 0 ? <span key={classKey} title={`${NOMES[classKey]}: ${formatNumber(count)}`}
-              className="flex items-center justify-center overflow-hidden whitespace-nowrap text-xs font-semibold"
-              style={{ width: `${100 * count / total}%`, backgroundColor: colors[classKey], color: "var(--bg)" }}>
-              {count / total >= 0.18 ? `${NOMES[classKey]} ${formatNumber(count)}` : null}</span> : null;
+              style={{ width: `${100 * count / total}%`, backgroundColor: colors[classKey], borderRight: "2px solid var(--paper)" }} /> : null;
           })}</div></div>)}
       </div>
-      <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-text-muted">{CLASSES.map(name => <span key={name} className="inline-flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: colors[name] }} />{NOMES[name]}</span>)}</div>
+      <div className="ui-table-scroll mt-5"><table className="ui-table"><thead><tr><th>Modelo</th>{CLASSES.map(name => <th key={name}>
+        <span className="inline-flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: colors[name] }} />{NOMES[name]}</span></th>)}</tr></thead>
+        <tbody>{MODELOS.map(name => <tr key={name}><td className="font-mono">{name}</td>{CLASSES.map(classKey =>
+          <td key={classKey} className="font-mono">{formatNumber(summary?.contagens?.[name]?.[classKey] ?? 0)}</td>)}</tr>)}</tbody></table></div>
       <p className="mt-4 text-xs text-text-muted">Cada barra mostra quantos fluxos receberam cada palpite. Não representa a classe real do tráfego.</p>
     </Card>
 
@@ -98,7 +98,7 @@ export function LivePanel({ analysis, tab }: { analysis: StatusAnalise; tab: "ge
     </Card></section>
 
     <details className="ui-card"><summary className="cursor-pointer text-sm font-semibold">Método e detalhes da análise</summary><div className="mt-4 space-y-4 text-sm text-text-muted">
-      <p>Palpites exploratórios de modelos reconstituídos. Probabilidades não calibradas; concordância não mede acurácia.</p>
+      <p>Palpites dos modelos treinados na análise do ISCX (cenário N, 100% dos rótulos). Probabilidades não calibradas; concordância não mede acurácia.</p>
       <label className="flex max-w-xs flex-col gap-1">Semente da análise<select className={fieldClass} value={seed} onChange={event => setSeed(Number(event.target.value))}>{[0, 1, 2, 3, 4].map(value => <option key={value} value={value}>Semente {value}</option>)}</select></label>
       <dl className="grid gap-3 sm:grid-cols-2"><div><dt>Pacotes lidos</dt><dd className="font-mono text-text">{formatNumber(analysis.n_pacotes_lidos)}</dd></div><div><dt>Fluxos extras sem classificação</dt><dd className="font-mono text-text">{formatNumber(analysis.n_fluxos_extras)}</dd></div><div><dt>Versão dos modelos</dt><dd>{analysis.versao_modelos || "Indisponível"}</dd></div><div><dt>ID da análise</dt><dd className="break-all font-mono">{analysis.id}</dd></div></dl>
       {analysis.motivo_parada === "teto_de_fluxos" && <p role="note">O limite de fluxos foi atingido; o lote pode conter fluxos que não foram classificados.</p>}

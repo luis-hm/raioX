@@ -65,10 +65,10 @@ export function ExamplePanel({ analysis }: { analysis: StatusAnalise }) {
   const packetCount = flow?.pacotes.length || 0;
 
   return <div className={styles.page}>
-    <Link className={styles.back} href="/">← Escolher outro exemplo</Link>
+    <Link className={styles.back} href="/enviar">← Escolher outro exemplo</Link>
     <header className={styles.hero}>
       <div>
-        <p className="label-small text-accent">Um fluxo, três pontos de vista</p>
+        <p className="eyebrow">Um fluxo, três pontos de vista</p>
         <h1>{flow ? `Exemplo de ${reference}` : analysis.nome_exibicao || "Exemplo ISCX"}</h1>
         <p>Veja os palpites lado a lado e acompanhe como mudam conforme chegam os pacotes.</p>
       </div>
@@ -80,10 +80,10 @@ export function ExamplePanel({ analysis }: { analysis: StatusAnalise }) {
         <section className={styles.result} aria-label="Resultado do exemplo">
           <div className={styles.reference}><span className="label-small">Referência da captura</span><strong>{reference}</strong><small>Rótulo herdado da captura ISCX; este fluxo não foi verificado manualmente.</small></div>
           <ModelPicks flow={flow} prefix={selected} />
-          <p className={styles.limit}>Palpites dos modelos reconstituídos; probabilidades não calibradas. Concordância e estabilidade não medem acerto.</p>
+          <p className={styles.limit}>Palpites dos modelos treinados na análise do ISCX; probabilidades não calibradas. Concordância e estabilidade não medem acerto.</p>
         </section>
         <section className={styles.timeline} aria-labelledby="packet-story-title">
-          <div className={styles.sectionHead}><div><p className="label-small text-accent">O que muda no caminho</p><h2 id="packet-story-title">Pacote a pacote</h2></div>
+          <div className={styles.sectionHead}><div><p className="eyebrow">O que muda no caminho</p><h2 id="packet-story-title">Pacote a pacote</h2></div>
             <span className="font-mono">{step === null ? `${prefixCount} pacotes` : `${step} / ${prefixCount}`}</span></div>
           <p>Avance na amostra inicial para comparar os palpites após cada pacote. O resultado acima começa pelo fluxo completo.</p>
           <div className={styles.packetTrack} role="img" aria-label={`Primeiros ${prefixCount} pacotes guardados; ${step ?? prefixCount} considerados`}>
@@ -180,6 +180,6 @@ export function ExampleComparison() {
         </div>;
       })}
     </section>
-    <p className={styles.caption}>Os exemplos usam apenas a biblioteca leve do projeto. Os rótulos são herdados das capturas ISCX e não foram verificados manualmente fluxo a fluxo. Modelos reconstituídos; palpites não equivalem a acertos.</p>
+    <p className={styles.caption}>Os exemplos usam apenas a biblioteca leve do projeto. Os rótulos são herdados das capturas ISCX e não foram verificados manualmente fluxo a fluxo. Palpites dos modelos treinados na análise do ISCX não equivalem a acertos.</p>
   </div>;
 }

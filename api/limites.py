@@ -61,6 +61,10 @@ async def validar_limite(request: Request) -> None:
         raise HTTPException(status_code=503, detail="Serviço temporariamente indisponível")
     client = request.client
     ip = client.host if client else "unknown"
+    # Em produção a API só é alcançada pelo proxy do Next, que repassa o IP do visitante;
+    # sem isso, todos os visitantes dividiriam o limite do IP do container web.
+    if os.environ.get("RAIOX_CONFIAR_PROXY") == "1":
+        ip = request.headers.get("x-raiox-client-ip", "").strip() or ip
     try:
         contador = getattr(request.app.state, "rate_counter", None) or redis_contador()
         _permitir(contador, ip, segredo)

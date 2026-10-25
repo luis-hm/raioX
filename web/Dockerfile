@@ -5,6 +5,9 @@ COPY web/package.json web/package-lock.json ./
 RUN npm ci
 COPY web/ ./
 COPY resultados_referencia/ ./resultados_referencia/
+# Endereço público usado nas imagens de compartilhamento das páginas pré-renderizadas.
+ARG NEXT_PUBLIC_SITE_URL=http://127.0.0.1:3000
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 RUN npm run build
 
 FROM node:22-alpine

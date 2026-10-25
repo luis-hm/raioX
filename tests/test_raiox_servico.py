@@ -454,6 +454,23 @@ class TestServicoAPI(unittest.TestCase):
         self.assertTrue(all(key.startswith("raiox:rate:v1:") for key in self.app.state.rate_counter.store))
         self.assertNotIn("127.0.0.1", chave_cliente("127.0.0.1", "teste-segredo"))
 
+    def test_ac_012_limite_por_visitante_atras_do_proxy(self):
+        """Atrás do proxy, cada visitante tem o próprio limite; sem a opção, o cabeçalho é ignorado @spec:AC-012"""
+        import os
+        from unittest.mock import patch
+
+        def criar(ip):
+            return self.client.post("/api/analises/exemplo/chat", headers={"x-raiox-client-ip": ip}).status_code
+
+        with patch.dict(os.environ, {"RAIOX_CONFIAR_PROXY": "1"}):
+            self.assertEqual([criar("198.51.100.7") for _ in range(10)], [202] * 10)
+            self.assertEqual(criar("198.51.100.7"), 429)
+            self.assertEqual(criar("203.0.113.9"), 202)
+        with patch.dict(os.environ, {"RAIOX_CONFIAR_PROXY": "0"}):
+            # Sem confiar no proxy vale o IP da conexão: trocar o cabeçalho não escapa do limite.
+            self.assertEqual([criar(f"192.0.2.{i}") for i in range(10)], [202] * 10)
+            self.assertEqual(criar("192.0.2.200"), 429)
+
     def test_ac_012_redis_indisponivel_falha_fechada_sem_detalhes(self):
         """Falha do rate limit retorna 503 genérico e não agenda análise @spec:AC-012"""
         class Indisponivel:

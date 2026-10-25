@@ -35,7 +35,10 @@ function FlowDetailsContent({ id, n }: { id: string; n: number }) {
     return () => controller.abort();
   }, [id, n, attempt]);
   const back = analysis?.origem === "exemplo" ? `/a/${encodeURIComponent(id)}` : `/a/${encodeURIComponent(id)}?aba=fluxos`;
-  if (loading) return <Card title="Carregando fluxo"><p role="status">Consultando metadados e palpites…</p></Card>;
+  if (loading) return <div className="ui-state" role="status">
+    {/* eslint-disable-next-line @next/next/no-img-element */}
+    <img className="marca-carregando" src="/brand/raio-x-symbol-light.svg" alt="" width={40} height={40} />
+    <p className="ui-state__title">Carregando fluxo</p><p className="ui-state__description">Consultando metadados e palpites…</p></div>;
   if (error?.status === 404) return <ErrorState title="Fluxo não encontrado" description="O número ou a análise não existe, ou a análise expirou." action={{ label: "Voltar à análise", href: back }} />;
   if (error) return <section className="ui-card" role="alert"><h1>Não foi possível carregar o fluxo</h1><p>{error.message}</p>
     <button type="button" className="ui-button ui-button--primary" onClick={() => setAttempt(value => value + 1)}>Tentar novamente</button></section>;
@@ -43,9 +46,10 @@ function FlowDetailsContent({ id, n }: { id: string; n: number }) {
   if (!flow) return <Card title="Nenhum dado do fluxo"><p>O serviço não devolveu metadados para este fluxo.</p><Link href={back}>Voltar à tabela</Link></Card>;
   return <div className="min-w-0 space-y-4">
     <Link href={back} className="text-sm text-accent underline">← {analysis.origem === "exemplo" ? "Voltar ao exemplo" : "Voltar à tabela"}</Link>
-    <header className="ui-card"><p className="label-small text-accent">Raio-X do fluxo · análise real</p><h1 className="text-2xl">Fluxo #{flow.n}</h1>
-      <p>{flow.proto === 6 ? "TCP" : "UDP"} · {analysis.n_arquivos_zip == null ? "início" : "início relativo ao arquivo de origem"} {flow.ini_s.toLocaleString("pt-BR")} s · duração observada {flow.duracao_s == null ? "indisponível" : `${flow.duracao_s.toLocaleString("pt-BR")} s`}.</p>
-      <p className="text-sm text-text-muted">A duração vai do primeiro ao último pacote com carga observado, inclusive além dos 100 pacotes guardados. Os bytes e a tabela de pacotes se limitam à amostra guardada.</p>
+    <header className="grid gap-3 border-b border-line pb-6"><p className="eyebrow">Raio-X do fluxo · {flow.proto === 6 ? "TCP" : "UDP"}</p>
+      <h1 className="display text-[clamp(32px,4.4vw,56px)]">Fluxo #{flow.n}</h1>
+      <p className="font-mono text-sm text-ink-2">{analysis.n_arquivos_zip == null ? "início" : "início relativo ao arquivo de origem"} {flow.ini_s.toLocaleString("pt-BR")} s · duração observada {flow.duracao_s == null ? "indisponível" : `${flow.duracao_s.toLocaleString("pt-BR")} s`} · {flow.pacotes.length} pacotes guardados</p>
+      <p className="max-w-[70ch] text-sm text-slate">A duração vai do primeiro ao último pacote com carga observado, inclusive além dos 100 pacotes guardados. Os bytes e a tabela de pacotes se limitam à amostra guardada.</p>
     </header>
     {!flow.principal || flow.pacotes.length < 3
       ? <Card title="Fluxo sem explicação"><p>Os modelos explicam fluxos principais com pelo menos três pacotes guardados.</p></Card>

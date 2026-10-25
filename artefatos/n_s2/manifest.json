@@ -9,33 +9,11 @@
     "streaming",
     "voip"
   ],
-  "versao_python": "3.12.3",
-  "versao_numpy": "2.1.3",
-  "versao_sklearn": "1.6.1",
-  "versao_torch": "2.11.0+cpu",
-  "versao_onnxruntime": "1.31.0",
   "modelos": {
-    "b1.joblib": "f6f5bfa2fc75d0b6d4e6d503daaec3d05ff4e24b6e94e1af96688c20eec526fd",
-    "b2.onnx": "af388e140c1ea166eae8a92ff9190cd0cc45e8aee29953727acb29759980c8e8",
-    "p.onnx": "24416c661aaa16c06f5894ed3f81e0244b9bfbb907a4753e4a2b2e7e8260c0af",
+    "b1.joblib": "60feaddfd30abb34d8ca4f3020c061d0543ea038070d956c5d31b5dbf182068a",
+    "b2.onnx": "5179ea4bca599ecc75e9c886a3261ea35c23fbe043396539a8c425263840bc1c",
+    "p.onnx": "8ee1ff992b1a19d632d927326105a9dcff2e337268586324cf9d941804f5f075",
     "norm.json": "241b1f1675dd85143169ab68f996d735ec9b05e7a0b6fecb9e0db77cef9d9db9"
   },
-  "comparacao_referencia": {
-    "B1": {
-      "divergencias": 18,
-      "n_teste": 970,
-      "previsoes_iguais_referencia": false
-    },
-    "B2": {
-      "divergencias": 199,
-      "n_teste": 970,
-      "previsoes_iguais_referencia": false
-    },
-    "P": {
-      "divergencias": 292,
-      "n_teste": 970,
-      "previsoes_iguais_referencia": false
-    }
-  },
-  "aviso": "reconstituicao local; nao afirmar equivalencia com os classificadores do estudo"
+  "origem": "experimento refeito a partir dos pcaps (experimento/executar.py)"
 }

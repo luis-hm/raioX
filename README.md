@@ -1,41 +1,40 @@
 # Raio-X do Tráfego
 
-**Uma aplicação didática para explorar o que modelos de aprendizado de máquina conseguem — e não conseguem — inferir a partir dos metadados de fluxos de rede.**
+![Raio-X do Tráfego](raio-x/raio-x-card-light.svg)
 
-O Raio-X transforma o experimento acadêmico em uma experiência interativa: a pessoa envia uma captura `.pcap`/`.pcapng` ou escolhe um exemplo preparado, acompanha a extração e compara palpites de três modelos. No detalhe de um fluxo, pode sincronizar a sequência de pacotes com a matriz de entrada e explorar como as previsões variam. O sistema não inspeciona nem armazena o conteúdo (payload) dos pacotes.
+**Classificação de tráfego cifrado só com tamanho, direção e ritmo dos pacotes — sem abrir o conteúdo.**
 
-> **Importante:** as classificações são palpites, não identificação garantida da aplicação, prova de tráfego cifrado, alerta de segurança ou avaliação de acurácia. Uploads não têm rótulos conhecidos para calcular desempenho. As animações da página de demonstração usam dados sintéticos e são identificadas como ilustrações.
+O Raio-X transforma o trabalho de Redes de Computadores (UFC Russas, Projeto 4) numa aplicação interativa. O experimento foi refeito
+do zero a partir das 109 capturas brutas do ISCX VPN-nonVPN e o site mostra o que ele apurou: três modelos (Random Forest, CNN e CNN com
+pré-treino auto-supervisionado) tentam dizer se cada fluxo é chat, e-mail, transferência, streaming ou VoIP.
+
+> As classificações são palpites de modelos, não identificação garantida da aplicação nem alerta de segurança. Uploads não têm rótulo para
+> medir acerto; desempenho só é medido no conjunto de teste rotulado do ISCX.
 
 ## O que você pode fazer
 
-- Enviar uma captura de rede compatível ou começar por um dos cinco exemplos ISCX, um por classe.
-- Acompanhar o processamento e navegar pelos fluxos extraídos, com filtros, paginação, mapa temporal anônimo e exportação CSV.
-- Comparar, na mesma semente, as previsões de B1, B2 e P; observar concordância entre modelos e estabilidade entre cinco sementes.
-- Abrir o raio-X de um fluxo: ver pacotes anonimizados, matriz 32×4, probabilidades e explicações exploratórias por prefixo e oclusão.
-- Usar o simulador visual de perda de pacotes (0%, 10% ou 20%) para discutir limitações da observação. Ele não altera a entrada, não reclassifica e não muda resultados experimentais.
-- Consultar a metodologia, as tabelas publicadas e as ressalvas do experimento.
-
-## Aplicação
+- **Ver a análise do ISCX** (`/analise`): as 98 capturas passam pelo raio-X — leitura, separação por sessão, matrizes 32×4, treino e teste.
+- **Ler os resultados** (`/resultados`): veredito das hipóteses H1–H4, poucos rótulos, aplicações não vistas, perda de pacotes, custo,
+  codificador congelado, F1 por classe, matriz de confusão, oclusão e exposição de informação.
+- **Enviar seus arquivos** (`/enviar`): um `.pcap`, `.pcapng` ou `.zip` com até 20 capturas; o painel mostra os palpites dos três modelos por fluxo,
+  concordância, mapa temporal, filtros e exportação CSV.
+- **Abrir o raio-X de um fluxo** (`/a/{id}/fluxo/{n}`): escada de pacotes, matriz 32×4, palpites por prefixo e oclusão.
+- **Entender o método** (`/metodologia`): o protocolo do pcap ao teste estatístico.
 
 | Rota | Conteúdo |
 | --- | --- |
-| `/` | Apresentação, upload e seleção de exemplo |
-| `/a/{id}` | Estado da análise, resumo, filtros e lista de fluxos |
-| `/a/{id}/fluxo/{n}` | Detalhe e raio-X do fluxo selecionado |
-| `/metodologia` | Contexto do estudo, comparação dos modelos e resultados de referência |
-| `/dev/componentes` | Galeria de componentes e demonstrações sintéticas, não resultados de uma captura |
+| `/` | Apresentação e o visor do raio-X |
+| `/analise` | Análise das capturas do ISCX |
+| `/resultados` | Resultados do experimento |
+| `/metodologia` | Protocolo e limitações |
+| `/enviar` | Upload de capturas e exemplos do ISCX |
+| `/a/{id}` · `/a/{id}/fluxo/{n}` | Processamento, painel e raio-X de um fluxo |
 
 ## Modelos e contexto científico
 
-O sistema aplica três métodos à classificação de fluxos em **chat, e-mail, transferência, streaming e VoIP**:
-
-- **B1:** Random Forest;
-- **B2:** rede neural convolucional (CNN);
-- **P:** a mesma arquitetura CNN de B2, com pré-treino.
-
-Para cada fluxo, a aplicação representa até os primeiros 32 pacotes com carga útil em uma matriz 32×4 construída a partir de tamanho, direção, intervalo e máscara de presença. Os palpites da análise ao vivo vêm de modelos locais reconstruídos no cenário N, com 100% dos rótulos e cinco sementes. Eles **não são equivalentes** aos classificadores originais do estudo: a reconstrução divergiu em comparações com previsões salvas. No macro-F1 do teste, B1 e P locais ficam na média do estudo e o B2 local fica acima dela (detalhes em [`treino/EXECUCAO_T002.md`](treino/EXECUCAO_T002.md)). Os cinco exemplos seguem a divisão por sessão do estudo: só o de streaming esteve no treino de uma semente (a 3), e o Raio-X avisa quando ela é escolhida. Por isso, os artefatos publicados e os resultados de uploads são mantidos separados; as previsões reconstruídas não devem substituir as tabelas do trabalho.
-
-O estudo original avaliou um conjunto e um protocolo específicos. A interface acrescenta exploração visual, uploads e análises que não fizeram parte daquela avaliação. Prefixos e oclusões são explorações de sensibilidade dos modelos locais — não explicações causais, nem reprodução garantida do experimento. Probabilidades não calibradas não devem ser lidas como confiança ou chance de acerto.
+Cada fluxo é descrito pelos 32 primeiros pacotes com carga útil numa matriz 32×4: tamanho com direção, intervalo, presença e máscara.
+**B1** é um Random Forest sobre 11 estatísticas; **B2** é uma CNN 1D treinada só com rótulos; **P** é a mesma CNN, pré-treinada para reconstruir
+15% dos pacotes escondidos, sem rótulos. A divisão é por sessão, com cinco sementes, para nenhuma conversa estar no treino e no teste.
 
 ## Arquitetura
 
@@ -48,101 +47,91 @@ API FastAPI ── Redis / RQ ── worker de análise
         └──── PostgreSQL ◄────────┘
                     │
              limpeza periódica
+
+experimento/ (offline) ── pcaps brutos → resultados, modelos (artefatos/) e web/data/experimento.json
 ```
 
-- **Frontend:** Next.js App Router, React, TypeScript, Tailwind CSS e componentes de visualização próprios.
-- **API e processamento:** FastAPI, SQLAlchemy/Alembic, `dpkt`, NumPy e scikit-learn/ONNX Runtime para os artefatos de inferência.
-- **Execução assíncrona:** Redis e RQ separam o recebimento da captura do processamento pelo worker.
-- **Persistência:** PostgreSQL no Compose; a camada de serviço também tem contratos para SQLite em testes.
-- **Ambiente local:** Docker Compose com serviços de banco, fila, migração, API, worker, limpeza e web. Só o web é publicado no host, preso a `127.0.0.1` por padrão.
+- **Frontend:** Next.js App Router, React, TypeScript, Tailwind e visualizações próprias (canvas e SVG). Identidade em [`docs/DESIGN.md`](docs/DESIGN.md).
+- **API e worker:** FastAPI, SQLAlchemy/Alembic, `dpkt`, NumPy, scikit-learn e ONNX Runtime.
+- **Experimento:** PyTorch (GPU quando houver), scikit-learn e SciPy, em `experimento/`.
 
-## Executar o projeto
+## Início rápido com Docker
 
-Requisitos: Docker Engine, `docker compose` e `make`. Na raiz do repositório, prepare o ambiente uma vez:
+Requisitos: Docker Engine, `docker compose` e `make`.
 
 ```sh
-cp .env.example .env
+cp .env.example .env    # troque POSTGRES_PASSWORD e RAIOX_RATE_SECRET; a senha também vai em DATABASE_URL
+make run                # web, API, worker, PostgreSQL e Redis
 ```
 
-Edite `.env`: substitua `POSTGRES_PASSWORD` e `RAIOX_RATE_SECRET` por valores fortes e únicos. Mantenha a senha igual na URL `DATABASE_URL`; codifique caracteres reservados na URL. Não compartilhe nem versione esse arquivo.
+Abra [http://127.0.0.1:3000](http://127.0.0.1:3000). Sem o `make`, `docker compose up -d --build` faz o mesmo. `make up` sobe em segundo plano; `make ps`, `make logs` e `make down` acompanham e encerram.
+Só o web é publicado no host, em `127.0.0.1`.
 
-Para iniciar **frontend, API, worker, PostgreSQL e Redis juntos**, com os logs no terminal:
+## Refazer o experimento
+
+Os resultados exibidos vêm de `python -m experimento.executar`, que lê os pcaps brutos e segue as Etapas 5 a 9 do protocolo:
 
 ```sh
-make run
+pip install -r requirements.txt -r requirements-export.txt          # PyTorch com CUDA é opcional, mas acelera as CNNs
+python -m experimento.executar --pcaps /caminho/REDES --base /caminho/saida
 ```
 
-Abra o **frontend em [http://127.0.0.1:3000](http://127.0.0.1:3000)**. Se alterar `WEB_PORT` no `.env`, use `make url` para ver a URL correta. O navegador fala com a API pelo proxy `/api` do Next.js; `API_URL=http://api:8000` é um endereço interno entre containers e não é a URL do frontend. O Compose executa a migração antes da API e do worker. `Ctrl+C` encerra a execução em primeiro plano sem apagar os volumes.
-
-Para trabalhar com os containers em segundo plano:
-
-```sh
-make up     # sobe tudo e mostra a URL do frontend
-make ps     # mostra o estado dos serviços
-make logs   # acompanha os logs
-make down   # encerra sem apagar os dados persistidos
-```
-
-`make run` e `make up` usam `docker compose up --build`; também é possível executar `docker compose up -d --build` diretamente. A primeira construção pode demorar por causa das dependências de inferência. Se o front não abrir, confira `make ps` e `make logs` para identificar qual serviço não iniciou.
-
-O envio aceita `.pcap` e `.pcapng` individuais ou um `.zip` com até 20 capturas desses formatos. O arquivo enviado tem limite de 200 MB; as capturas descompactadas somadas, 500 MB. Cada ZIP cria uma nova análise combinada (não altera uma análise anterior). O painel reúne os palpites por fluxo, sem inventar uma linha do tempo comum entre arquivos. Até 2.000 fluxos são guardados e 500 recebem palpites; se o limite for atingido, o painel avisa que o resultado é parcial.
-
-A limpeza remove análises expiradas e arquivos temporários órfãos. O limite de criação é de 10 análises por IP por hora; sem segredo de rate limit ou sem Redis, a criação falha fechada.
+`--pcaps` é a pasta com `NonVPN-PCAPs-01`, `-02` e `-03` (109 arquivos). A execução é retomável e grava em `--base` os dados processados,
+os 250 resultados, as previsões e os pré-treinos; ao final, atualiza `artefatos/` (modelos de N/100% usados pela API), `exemplos/biblioteca.json`
+e `web/data/experimento.json` (lido pelas páginas). O passo a passo e a conferência com o relatório estão em [`docs/SISTEMA.md`](docs/SISTEMA.md).
 
 ## Desenvolvimento e testes
 
-Para editar o frontend com recarga automática, tenha Node.js e npm instalados e use o modo de desenvolvimento. Ele sobe API, worker, banco e Redis em containers, publica a API somente em `127.0.0.1:8000` e inicia o Next.js no host:
-
 ```sh
-make dev
+make dev                                # backend em containers e Next.js com recarga em http://127.0.0.1:3000
+cd web && npm run typecheck             # tipos do frontend
+.venv/bin/python tests/run_tap.py       # contratos do backend, da interface e do projeto
 ```
-
-Nesse modo, o frontend continua em [http://127.0.0.1:3000](http://127.0.0.1:3000). O `make dev` instala as dependências de `web/` na primeira execução. `Ctrl+C` encerra o Next.js; execute `make down` para parar também os serviços em container. Para voltar ao ambiente integralmente em containers, use `make run`.
-
-O typecheck do frontend é executado com `npm run typecheck` dentro de `web/`. Os contratos automatizados do backend e do projeto podem ser executados pelo runner:
-
-```sh
-.venv/bin/python tests/run_tap.py
-```
-
-No estado atual, a suíte tem uma falha conhecida em `AC-002`: a reconstrução local dos classificadores não reproduz todas as previsões gravadas no estudo. A divergência está registrada em [`treino/EXECUCAO_T002.md`](treino/EXECUCAO_T002.md); não é uma falha de instalação e não deve ser escondida como se os modelos fossem equivalentes. Os outros critérios são reportados pelo runner individualmente.
-
-O ambiente Python para treino está em `requirements.txt`; a imagem da API e do worker usa `requirements-service.txt`, que inclui ONNX Runtime e dispensa PyTorch/CUDA. Os requisitos de exportação/modelos ficam em `requirements-export.txt`. Para executar uma captura no pipeline de linha de comando, consulte `python -m core.analisar --help` e a documentação do sistema.
 
 ## Privacidade, limites e uso responsável
 
-- Endereços IP e portas são usados somente em memória para agrupar os pacotes; não são persistidos nos registros da análise. O payload não é armazenado nem exibido.
-- O arquivo PCAP original é temporário e removido após extração, inclusive em falhas tratadas. Resultados anonimizados da análise expiram em sete dias.
-- Limites operacionais atuais: upload de 200 MB; leitura de até 3 milhões de pacotes; até 2.000 fluxos extraídos e 500 fluxos principais classificados; até 100 pacotes guardados por fluxo, dos quais no máximo 32 entram na matriz do modelo; processamento com prazo de até cinco minutos.
-- A API aceita `.pcap`, `.pcapng` e ZIP com esses formatos, validando os arquivos antes de processá-los. Capturas malformadas, formatos não suportados e análises interrompidas podem falhar ou resultar em leitura parcial.
-- Resultados dependem da qualidade, ponto de captura e representatividade dos dados. Não use esta aplicação para monitoramento de produção, resposta a incidentes ou decisões de segurança.
-
-Esses limites e o contrato exato de retenção, APIs, dados e explicações estão detalhados em [`docs/SISTEMA.md`](docs/SISTEMA.md). A proposta visual e as regras de interface estão em [`docs/DESIGN.md`](docs/DESIGN.md).
+- IPs e portas só agrupam pacotes, em memória; nunca são gravados. O conteúdo (payload) não é guardado nem exibido.
+- O arquivo enviado é apagado logo após a leitura, inclusive em erro. Resultados anônimos expiram em 7 dias.
+- Limites: upload de 200 MB (ZIP com até 20 capturas e 500 MB abertos); leitura de até 3 milhões de pacotes; 2.000 fluxos guardados e 500 classificados;
+  até 100 pacotes guardados por fluxo, 32 na matriz; cinco minutos de processamento; 10 análises por IP por hora.
+- Os modelos aprenderam com tráfego de laboratório de 2016. Em capturas atuais (TLS 1.3, QUIC) podem errar mais. Não use para monitoramento de produção
+  nem decisões de segurança.
 
 ## Estado do projeto e resultados
 
-O pipeline, a API, os serviços de container e as principais telas estão implementados. Isso não significa que a implantação pública esteja concluída: **implantação externa, domínio, VPS e proxy ainda não foram validados; nenhum deploy foi executado**. A automação de deploy ficou fora deste envio.
+O pipeline, a API, os containers, o experimento refeito e as telas estão implementados e verificados localmente.
+**A implantação externa ainda não foi executada:** domínio, VPS e proxy não foram validados. O workflow `.github/workflows/deploy.yml` está pronto e
+depende dos secrets `VPS_HOST`, `VPS_USER`, `VPS_SSH_PRIVATE_KEY` e `VPS_KNOWN_HOSTS` e da variable `VPS_DEPLOY_PATH`.
 
-A comparação adicional de treino com 10% e 100% dos rótulos está protocolada — 10% estratificados no treino, teste intocado, cinco sementes pareadas e macro-F1 — mas ainda não foi executada: faltam neste workspace os dados processados e encoders necessários. Consulte [`treino/PROTOCOLO_FRACAO_ROTULOS.md`](treino/PROTOCOLO_FRACAO_ROTULOS.md), o [registro da reconstrução](treino/EXECUCAO_T002.md) e o [manifesto dos resultados publicados](resultados_referencia/manifesto.json). Nenhum desses resultados é substituído por uma execução local.
+**Resultado da execução refeita** (250 execuções, 5 sementes, teste *t* pareado com Holm; detalhes em `/resultados`):
+
+| Macro-F1 médio no teste (N) | 1% | 5% | 10% | 100% |
+| --- | --- | --- | --- | --- |
+| B1 · Random Forest | 0,267 | 0,373 | 0,424 | **0,543** |
+| B2 · CNN | 0,299 | 0,368 | 0,385 | 0,476 |
+| P · CNN + pré-treino | 0,279 | 0,370 | 0,401 | 0,436 |
+
+- **H1, H2 e H3 não foram sustentadas; H4 foi confirmada** — as mesmas conclusões do relatório original. Nenhuma diferença P − B2 é significativa.
+- As diferenças significativas favorecem o Random Forest: aplicações não vistas em A2 (−15 e −19 pp para o P) e perda de pacotes no C4 (de −5 a −13 pp).
+- A Etapa 5 reproduziu os dados do relatório exatamente (5.653 fluxos; testes de vazamento idênticos) e o B1 repetiu os macro-F1 publicados.
+  As CNNs diferem um pouco: a regra de escolha de passos na validação apontou 2.000 passos nesta execução (4.000 no relatório) e o treino rodou em outra GPU.
 
 ## Estrutura principal
 
 ```text
 api/                    API, schemas, persistência e limites
 core/                   extração PCAP, matrizes, modelos e explicações
-docs/                   documentação do sistema, design e referências visuais
-exemplos/               biblioteca determinística dos cinco exemplos
-resultados_referencia/  resultados científicos versionados e manifesto
+experimento/            reexecução das Etapas 5–9 a partir dos pcaps
+artefatos/              modelos B1/B2/P de N/100% usados pela API
+docs/                   documentação do sistema e do design
+exemplos/               cinco fluxos do ISCX para exploração
 tests/                  testes e contratos automatizados
-treino/                 protocolos e scripts de reprodução experimental
-web/                    aplicação Next.js
+treino/                 protocolos e scripts de reprodução anteriores
+web/                    aplicação Next.js (web/data: resultado do experimento)
 worker/                 fila, processamento assíncrono e retenção
-docker-compose.yml      ambiente local completo
 ```
 
 ## Documentação
 
-- [Documentação do sistema](docs/SISTEMA.md) — escopo, telas, arquitetura, ciclo de vida, API, modelo de dados, segurança, limites, status e roteiro.
-- [Design da interface](docs/DESIGN.md) — direção visual, referências, tokens, componentes, movimento e responsividade.
-- [Protocolo 10% × 100%](treino/PROTOCOLO_FRACAO_ROTULOS.md) — desenho da comparação adicional ainda pendente de execução.
-- [Resultados de referência](resultados_referencia/manifesto.json) — origem, contagens e hashes dos arquivos publicados.
+- [Documentação do sistema](docs/SISTEMA.md) — escopo, telas, experimento refeito, arquitetura, API, dados, segurança e roteiro.
+- [Design da interface](docs/DESIGN.md) — identidade, tokens, paletas validadas, movimento, gráficos e fluxo das telas.

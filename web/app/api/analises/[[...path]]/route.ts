@@ -14,14 +14,18 @@ async function forward(request: NextRequest, path: string[] = []) {
   if (!valid) return NextResponse.json({ detail: "Rota inválida" }, { status: 404 });
   const base = process.env.API_URL || "http://127.0.0.1:8000";
   const target = new URL(`/api/analises${segments.length ? `/${segments.map(encodeURIComponent).join("/")}` : ""}${request.nextUrl.search}`, base);
+  // O proxy da frente (Traefik/Caddy) acrescenta o IP do visitante ao fim do X-Forwarded-For; o primeiro
+  // valor pode ter sido forjado pelo cliente. A API só usa este cabeçalho com RAIOX_CONFIAR_PROXY=1.
+  const visitante = request.headers.get("x-forwarded-for")?.split(",").pop()?.trim() || "";
+  const headers: Record<string, string> = visitante ? { "x-raiox-client-ip": visitante } : {};
   try {
-    const options: RequestInit = { method: request.method, cache: "no-store", signal: request.signal };
+    const options: RequestInit = { method: request.method, cache: "no-store", signal: request.signal, headers };
     if (request.method === "POST" && segments.length === 0) {
       const contentType = request.headers.get("content-type");
       if (!contentType?.toLowerCase().startsWith("multipart/form-data;") || !contentType.includes("boundary="))
         return NextResponse.json({ detail: "Arquivo obrigatório" }, { status: 400 });
       // Encaminha o multipart em streaming; ZIPs grandes não são carregados na memória do Next.
-      options.headers = { "content-type": contentType };
+      options.headers = { ...headers, "content-type": contentType };
       options.body = request.body;
       (options as RequestInit & { duplex: "half" }).duplex = "half";
     }

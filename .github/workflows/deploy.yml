@@ -13,6 +13,9 @@ concurrency:
 
 jobs:
   deploy:
+    # O deploy de produção é do Coolify (compose.coolify.yaml). Este caminho por SSH só roda
+    # quando a variable VPS_DEPLOY_PATH existir; sem ela, o job é pulado em vez de falhar.
+    if: ${{ vars.VPS_DEPLOY_PATH != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:

@@ -1,5 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="24 24 208 208" width="208" height="208" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256"><title>raio-x</title><g transform="translate(5.12 5.12) scale(0.96)">
   <title id="title">Raio-X do Tráfego</title>
-  <rect x="24" y="24" width="208" height="208" rx="40" fill="#0A0F14"/>
-  <path fill="#22D3EE" d="M48 48h160v48h-36V84H84v88h88v-12h36v48H48V48zm48 48h20l12 12 12-12h20l-32 32 32 32h-20l-12-12-12 12H96l32-32-32-32z"/>
-</svg>
+  <rect width="256" height="256" rx="56" fill="#0A0F14"/>
+  <g id="symbol" transform="translate(32 32) scale(0.75)">
+    <path fill="#A78BFA" fill-rule="evenodd" d="M201.39 33.39L147.63 87.15A15 15 0 0 0 168.85 108.37L222.61 54.61A15 15 0 0 0 201.39 33.39ZM87.15 147.63L33.39 201.39A15 15 0 0 0 54.61 222.61L108.37 168.85A15 15 0 0 0 87.15 147.63Z"/>
+    <path fill="#2DD4BF" fill-rule="evenodd" d="M33.39 54.61L56.91 78.13A15 15 0 0 0 78.13 56.91L54.61 33.39A15 15 0 0 0 33.39 54.61ZM88.83 110.05L145.95 167.17A15 15 0 0 0 167.17 145.95L110.05 88.83A15 15 0 0 0 88.83 110.05ZM177.87 199.09L201.39 222.61A15 15 0 0 0 222.61 201.39L199.09 177.87A15 15 0 0 0 177.87 199.09Z"/>
+  </g>
+</g></svg>
