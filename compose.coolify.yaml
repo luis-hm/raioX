@@ -1,0 +1,124 @@
+# Produção no Coolify (recurso "Docker Compose" ligado ao repositório pelo GitHub App).
+# - Só o `web` recebe domínio (https://raiox.codehub.systems, porta 3000); API, worker, banco e Redis
+#   ficam sem porta publicada e só são alcançados pela rede interna do compose.
+# - POSTGRES_PASSWORD e RAIOX_RATE_SECRET vêm das variáveis do painel do Coolify; nada secreto fica no repositório.
+# - Para o ambiente local, use docker-compose.yml (make run).
+
+x-python-env: &python-env
+  DATABASE_URL: postgresql+psycopg://raiox:${POSTGRES_PASSWORD}@db:5432/raiox
+  REDIS_URL: redis://redis:6379/0
+  RAIOX_RATE_SECRET: ${RAIOX_RATE_SECRET}
+  RAIOX_UPLOAD_DIR: /data/uploads
+  # A API só recebe tráfego pelo proxy do Next, que repassa o IP do visitante para o rate limit.
+  RAIOX_CONFIAR_PROXY: "1"
+
+x-api-build: &api-build
+  context: .
+  dockerfile: Dockerfile.api
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: raiox
+      POSTGRES_USER: raiox
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U raiox -d raiox"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  # Roda a cada deploy (alembic upgrade head) e sai; API e worker só sobem depois.
+  migrate:
+    build: *api-build
+    environment: *python-env
+    command: ["alembic", "-c", "alembic/alembic.ini", "upgrade", "head"]
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+    exclude_from_hc: true
+
+  api:
+    build: *api-build
+    restart: unless-stopped
+    environment: *python-env
+    volumes:
+      - uploads:/data/uploads
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/docs', timeout=3).close()"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+
+  worker:
+    build: *api-build
+    restart: unless-stopped
+    environment: *python-env
+    command: ["python", "-m", "worker.queue"]
+    volumes:
+      - uploads:/data/uploads
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    mem_limit: 2g
+
+  limpeza:
+    build: *api-build
+    restart: unless-stopped
+    environment: *python-env
+    command: ["sh", "-c", "while true; do python -m worker.limpeza; sleep 86400; done"]
+    volumes:
+      - uploads:/data/uploads
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_URL: https://raiox.codehub.systems
+    restart: unless-stopped
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  postgres_data:
+  redis_data:
+  uploads:

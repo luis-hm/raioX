@@ -88,19 +88,21 @@ class TestRaioXInterface(unittest.TestCase):
         config = (WEB / "tailwind.config.ts").read_text(encoding="utf-8")
         shell = (WEB / "components" / "ui" / "AppShell.tsx").read_text(encoding="utf-8")
 
+        # Identidade de raio-x-card-light e paletas validadas (docs/DESIGN.md, seção 2).
         tokens = {
-            "bg": "#0A0F14", "surface": "#111820", "surface-2": "#161F29",
-            "border": "#223040", "border-strong": "#2F4255", "text": "#E6EDF3",
-            "text-muted": "#8B9BAB", "text-faint": "#5B6B7B", "accent": "#22D3EE",
-            "accent-2": "#7C5CFF", "up": "#2DD4BF", "down": "#A78BFA",
-            "b1": "#FB923C", "b2": "#94A3B8", "p": "#38BDF8",
-            "cat-chat": "#60A5FA", "cat-email": "#FBBF24", "cat-transf": "#34D399",
-            "cat-stream": "#F472B6", "cat-voip": "#C084FC", "ok": "#22C55E",
-            "warn": "#F59E0B", "bad": "#EF4444",
+            "paper": "#FFFFFF", "paper-2": "#F4F6F6", "ink": "#0A0F14", "slate": "#5B6B7B",
+            "line": "#E1E6E9", "line-strong": "#C5CED5", "teal": "#0D9488", "teal-ink": "#0A6F66", "violet": "#7C5CFF",
+            "film": "#0A0F14", "b1": "#EB6834", "b2": "#6250D6", "p": "#0D9488",
+            "cat-chat": "#2A78D6", "cat-email": "#EDA100", "cat-transf": "#E34948",
+            "cat-stream": "#008300", "cat-voip": "#E87BA4", "ok": "#15803D",
+            "warn": "#B45309", "bad": "#DC2626",
         }
         for token, value in tokens.items():
             self.assertRegex(css, rf"--{re.escape(token)}:\s*{re.escape(value)}\s*;")
             self.assertRegex(config, rf'(?:"{re.escape(token)}"|\b{re.escape(token)}): "var\(--{re.escape(token)}\)"')
+        # Nomes antigos continuam resolvendo para a identidade nova.
+        for alias, alvo in (("bg", "paper"), ("text", "ink"), ("accent", "teal"), ("up", "teal"), ("down", "violet")):
+            self.assertRegex(css, rf"--{alias}:\s*var\(--{alvo}\)\s*;")
 
         for token in ("--bg-grid", "--surface-glass", "--font-archivo", "--font-plex-mono",
                       "--card-gap", "--card-padding", "--radius-card", "--radius-control",
@@ -110,9 +112,9 @@ class TestRaioXInterface(unittest.TestCase):
         self.assertIn('"IBM Plex Mono"', css)
         self.assertIn(":focus-visible", css)
         self.assertIn("prefers-reduced-motion: reduce", css)
-        self.assertIn("max-width: 1440px", css)
-        self.assertIn("max-width: 639px", css)
-        self.assertIn("padding-inline: max(16px", css)
+        self.assertIn("max-width: 1280px", css)
+        self.assertIn("max-width: 719px", css)
+        self.assertIn("padding-inline: max(20px", css)
         self.assertIn('href="#conteudo"', shell)
         self.assertIn('aria-label="Navegação principal"', shell)
         self.assertIn('aria-current=', shell)
@@ -173,28 +175,25 @@ class TestRaioXInterface(unittest.TestCase):
         self.assertNotRegex(flow + ladder + matrix + bars, r"\b(?:src|dst)IP\b|\b(?:source|destination)_ip\b")
 
     def test_ac_016_inicio_explica_entrada_privacidade_e_limite_da_integracao(self):
-        """Início descreve formatos e privacidade sem fingir a integração da captura."""
-        start = (WEB / "components" / "motion" / "StartExperience.tsx").read_text(encoding="utf-8")
-        stream = (WEB / "components" / "motion" / "PacketStream.tsx").read_text(encoding="utf-8")
+        """Início leva à análise e ao envio; o envio explica formatos, limite e privacidade @spec:AC-016"""
         page = (WEB / "app" / "page.tsx").read_text(encoding="utf-8")
+        enviar = (WEB / "app" / "enviar" / "page.tsx").read_text(encoding="utf-8")
+        start = (WEB / "components" / "ui" / "StartAnalysis.tsx").read_text(encoding="utf-8")
+        scanner = (WEB / "components" / "raiox" / "XRayScanner.tsx").read_text(encoding="utf-8")
 
-        self.assertIn('accept=".pcap,.pcapng,application/vnd.tcpdump.pcap"', start)
-        self.assertIn("maxBytes = 200_000_000", start)
+        self.assertIn('href="/analise"', page)
+        self.assertIn('href="/enviar"', page)
+        self.assertIn("Nenhum byte de conteúdo, IP ou porta é guardado", page)
+        self.assertIn("<StartAnalysis", enviar)
+        self.assertIn('accept=".pcap,.pcapng,.zip', start)
+        self.assertIn("MAX_BYTES = 200_000_000", start)
         self.assertIn("onDrop={dropFile}", start)
-        self.assertIn('data-dragging={dragging}', start)
-        self.assertIn("O arquivo original será apagado após a extração", start)
-        self.assertIn("não a carga útil, IPs ou portas", start)
-        self.assertIn("rótulo de referência é herdado da captura ISCX", start)
-        for category in ("chat", "email", "transferencia", "streaming", "voip"):
-            self.assertIn(f'id: "{category}"', start)
-        self.assertIn("Modelos treinados com tráfego do ISCX de 2016", start)
-        self.assertIn("Nenhum arquivo foi enviado", start)
-        self.assertIn("<StartAnalysis", page)
-        self.assertIn("gsap.ticker.add(paint)", stream)
-        self.assertIn("prefers-reduced-motion: reduce", stream)
-        self.assertIn('aria-hidden="true"', stream)
-        self.assertIn("--up", stream)
-        self.assertIn("--down", stream)
+        self.assertIn("IPs, portas e conteúdo nunca são guardados", start)
+        self.assertIn("O arquivo é apagado logo após a leitura", start)
+        # O visor nunca revela o conteúdo: antes do feixe só caracteres embaralhados, depois só a medida.
+        self.assertIn("o conteúdo nunca é revelado", scanner)
+        self.assertIn("prefers-reduced-motion: reduce", scanner)
+        self.assertIn("aria-label=", scanner)
 
     def test_ac_017_processamento_comunica_etapas_contadores_e_erro(self):
         """Estados de processamento apresentam texto e contadores além do movimento."""
@@ -221,28 +220,13 @@ class TestRaioXInterface(unittest.TestCase):
         self.assertIn("@media (max-width: 480px)", css)
 
     def test_demo_painel_filtra_fluxos_sem_afirmar_acuracia(self):
-        """Painel demonstrativo identifica fluxos sintéticos e não afirma acurácia."""
-        panel = (WEB / "components" / "ui" / "PanelDemo.tsx").read_text(encoding="utf-8")
-        fixture = (WEB / "lib" / "panel-demo.ts").read_text(encoding="utf-8")
+        """Fixtures do mapa demonstrativo são sintéticas e não afirmam topologia nem acurácia."""
         page = (WEB / "app" / "a" / "[id]" / "page.tsx").read_text(encoding="utf-8")
         ribbons = (WEB / "components" / "motion" / "FlowRibbons.tsx").read_text(encoding="utf-8")
         scrubber = (WEB / "components" / "motion" / "TimelineScrubber.tsx").read_text(encoding="utf-8")
         ribbon_fixture = (WEB / "components" / "motion" / "ribbon-demo.ts").read_text(encoding="utf-8")
+        fixture = (WEB / "lib" / "panel-demo.ts").read_text(encoding="utf-8")
 
-        self.assertIn("todos os números, fluxos, classes e probabilidades desta página são sintéticos", panel)
-        self.assertIn("Nenhuma captura foi analisada aqui", panel)
-        for label in ("Pacotes lidos", "Fluxos principais", "Duração observada", "Concordância entre modelos",
-                      "Distribuição dos palpites", "Estabilidade entre sementes", "Leitura do resultado"):
-            self.assertIn(label, panel)
-        self.assertIn("SEEDS.map", panel)
-        self.assertIn("MODELS.map", panel)
-        self.assertIn("filterFlows(DEMO_FLOWS, seed, model, category, disagreementsOnly)", panel)
-        self.assertIn("Só onde discordam", panel)
-        self.assertIn("Nenhum fluxo sintético corresponde aos filtros", panel)
-        self.assertIn("Concordância entre palpites não mede acerto", panel)
-        self.assertIn("Os tempos ilustrativos do mapa são sintéticos", panel)
-        self.assertIn("/fluxo/${flow.n}", panel)
-        self.assertIn("?aba=${name}", panel)
         self.assertIn('requestedTab === "fluxos" || requestedTab === "mapa"', page)
         self.assertIn("modelsAgree(flow, seed)", fixture)
         self.assertIn("seedStability(flow: DemoFlow, model: Model, seed: Seed)", fixture)
@@ -255,8 +239,6 @@ class TestRaioXInterface(unittest.TestCase):
         self.assertIn('role="slider"', scrubber)
         self.assertIn('onKeyDown=', scrubber)
         self.assertIn("Synthetic temporal fixtures only", ribbon_fixture)
-        self.assertIn("FlowRibbons flows={ribbons}", panel)
-        self.assertNotRegex(panel, r"#[0-9A-Fa-f]{3,8}\b")
 
     def test_ac_016_021_cliente_envia_formato_correto_e_trata_erros(self):
         """Cliente cria uploads/exemplos e consulta filtros reais, 404 e falha de rede @spec:AC-016 @spec:AC-021"""
@@ -278,12 +260,24 @@ class TestRaioXInterface(unittest.TestCase):
         self.assertIn("classe_prevista: '=1+1'", contract)
 
     def test_ac_020_metodologia_carrega_csvs_corrigidos(self):
-        """Leitura executável da metodologia usa 250 execuções e médias finais @spec:AC-020"""
-        result = subprocess.run(
-            ["node", str(WEB / "lib" / "results.contract.test.cjs")], cwd=WEB,
-            text=True, capture_output=True, timeout=30, check=False,
-        )
-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        """Metodologia e resultados leem as 250 execuções refeitas a partir dos pcaps @spec:AC-020"""
+        import json
+        metodo = (WEB / "app" / "metodologia" / "page.tsx").read_text(encoding="utf-8")
+        resultados = (WEB / "components" / "raiox" / "Resultados.tsx").read_text(encoding="utf-8")
+        self.assertIn("carregarExperimento()", metodo)
+        self.assertIn("exp.vereditos", resultados)
+        self.assertIn("Diferença não significativa não prova ausência de efeito", resultados)
+        dados = WEB / "data" / "experimento.json"
+        if not dados.exists():
+            self.skipTest("experimento ainda não executado neste workspace")
+        exp = json.loads(dados.read_text(encoding="utf-8"))
+        contagem = {}
+        for e in exp["execucoes"]:
+            contagem[e["cenario"]] = contagem.get(e["cenario"], 0) + 1
+        self.assertEqual(contagem, {"C1": 15, "C2": 45, "C3": 60, "C4": 90, "X1": 40})
+        self.assertEqual(exp["consistencia_c4"], 0.0)
+        self.assertEqual(set(exp["vereditos"]), {"H1", "H2", "H3", "H4"})
+        self.assertTrue(all(len(m) == 5 for m in exp["confusao"]["N|P"]))
 
     def test_ac_017_polling_usa_estados_reais_e_contadores(self):
         """Polling percorre estados recebidos, preserva pacotes lidos e para em pronta/erro/404 @spec:AC-017"""

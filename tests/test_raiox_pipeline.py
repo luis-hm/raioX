@@ -137,9 +137,11 @@ class TestRaioXPipeline(unittest.TestCase):
         from core.matriz import CLASSES, montar_matriz
         from treino.preparar_exemplos import AVISO, preparar
 
+        reexecucao = Path("/home/dev/dados/experimento")
         experimento = Path(os.environ.get(
             "RAIOX_EXPERIMENTO",
-            "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego",
+            reexecucao if (reexecucao / "dados_processados" / "splits.npz").exists()
+            else "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego",
         ))
         processados = experimento / "dados_processados"
         with np.load(processados / "dataset.npz", allow_pickle=False) as dataset:

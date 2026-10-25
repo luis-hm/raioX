@@ -10,7 +10,10 @@ import unittest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPERIMENTO = Path(os.environ.get("RAIOX_EXPERIMENTO", "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego"))
+# A reexecução a partir dos pcaps (experimento/executar.py) é a referência; RAIOX_EXPERIMENTO escolhe outra.
+REEXECUCAO = Path("/home/dev/dados/experimento")
+EXPERIMENTO = Path(os.environ.get("RAIOX_EXPERIMENTO", REEXECUCAO if (REEXECUCAO / "resultados" / "previsoes").is_dir()
+                                  else "/tmp/raiox-redes-review/trabalho de redes/projeto_trafego"))
 
 
 class TestSpecRaioXAplicacao(unittest.TestCase):
@@ -169,7 +172,7 @@ class TestSpecRaioXAplicacao(unittest.TestCase):
         import json
         from treino.reproduzir import exportar_modelos
 
-        modelos_locais = Path(os.environ.get("RAIOX_MODELOS_LOCAIS", "/tmp/raiox-cnn-all-seeds"))
+        modelos_locais = Path(os.environ.get("RAIOX_MODELOS_LOCAIS", EXPERIMENTO / "modelos" / "app"))
         if not modelos_locais.is_dir():
             self.fail("Execute T-002 B2/P ou configure RAIOX_MODELOS_LOCAIS antes de verificar AC-003")
         with tempfile.TemporaryDirectory(prefix="raiox-ac003-") as saida:
@@ -186,7 +189,8 @@ class TestSpecRaioXAplicacao(unittest.TestCase):
                 self.assertEqual(set(manifest["modelos"]), {"b1.joblib", "b2.onnx", "p.onnx", "norm.json"})
                 self.assertTrue(all((pasta / nome).is_file() for nome in manifest["modelos"]))
                 self.assertEqual(set(manifest["comparacao_referencia"]), {"B1", "B2", "P"})
-                self.assertTrue(all(not item["previsoes_iguais_referencia"]
+                # Os modelos guardados pela reexecução reproduzem as previsões que ela registrou.
+                self.assertTrue(all(item["previsoes_iguais_referencia"]
                                     for item in manifest["comparacao_referencia"].values()))
             self.assertTrue(all(r["onnx_preserva_torch"] for r in registros if r["metodo"] in ("B2", "P")))
 
