@@ -1,16 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
-import type { Experimento, Media, Teste } from "@/lib/experimento";
+import type { Media, ResultadoEstudo, Teste } from "@/lib/experimento";
 import { Calor, Linhas, PontosIntervalo, TabelaDados, num, type Serie } from "./graficos";
 import { Reveal } from "./Reveal";
 import s from "./resultados.module.css";
-
-type Dados = Omit<Experimento, "execucoes" | "amostra" | "dados"> & {
-  n_execucoes: number;
-  dados: { fluxos: number; capturas: number; completos_32: number; por_categoria: Experimento["dados"]["por_categoria"] };
-};
 
 const CLASSES = ["chat", "email", "transferencia", "streaming", "voip"];
 const NOME: Record<string, string> = { chat: "Chat", email: "E-mail", transferencia: "Transferência", streaming: "Streaming", voip: "VoIP" };
@@ -31,7 +27,7 @@ function teste(t: Teste[], grupo: string, comp: string, fracao: number, perda = 
   return t.find(r => r.grupo === grupo && r.comp === comp && Math.abs(r.fracao - fracao) < 1e-6 && Math.abs(r.perda - perda) < 1e-6);
 }
 
-export function Resultados({ exp }: { exp: Dados }) {
+export function Resultados({ exp }: { exp: ResultadoEstudo }) {
   const v = exp.vereditos;
   const melhorC1 = [...MET].sort((a, b) => (media(exp.medias, "N", b.id, 1)?.media ?? 0) - (media(exp.medias, "N", a.id, 1)?.media ?? 0))[0];
   const ganhou = (["H1", "H2", "H3"] as const).filter(h => v[h].sustentada);
@@ -54,7 +50,6 @@ export function Resultados({ exp }: { exp: Dados }) {
   const conf = exp.confusao[`N|${metConf}`] || [];
   const confPct = conf.map(l => { const t = l.reduce((a, b) => a + b, 0) || 1; return l.map(c => c / t); });
   const [metOcl, setMetOcl] = useState<"B2" | "P">("P");
-  const ocl = exp.oclusao[metOcl];
   const f1N = MET.map(m => exp.f1_por_classe.find(r => r.grupo === "N" && r.metodo === m.id));
   const expo = exp.exposicao;
   const mediaExpo = (k: keyof (typeof expo)[number]) => expo.reduce((a, r) => a + Number(r[k]), 0) / Math.max(1, expo.length);
@@ -81,7 +76,7 @@ export function Resultados({ exp }: { exp: Dados }) {
     <header className={s.hero}>
       <p className="eyebrow">Estudo ISCX · {exp.n_execucoes} execuções · 5 versões de treino</p>
       <h1 className={`display ${s.title}`}>{manchete}</h1>
-      <p className={s.lead}>Com 100% dos rótulos, o melhor macro-F1 médio no teste foi o de <strong>{melhorC1.rotulo}</strong>:{" "}
+      <p className={s.lead}>Na simulação final do trabalho, com 100% dos rótulos, o melhor macro-F1 médio no teste foi o de <strong>{melhorC1.rotulo}</strong>:{" "}
         {MET.map((m, i) => <span key={m.id}>{i ? " · " : ""}{m.id} <b className="font-mono">{num(media(exp.medias, "N", m.id, 1)?.media)}</b></span>)}.
         Diferença não significativa não prova ausência de efeito: com cinco sementes o teste tem pouco poder.</p>
     </header>
@@ -153,17 +148,18 @@ export function Resultados({ exp }: { exp: Dados }) {
         {(["B1", "B2", "P"] as const).map(m => <button key={m} type="button" aria-pressed={metConf === m} onClick={() => setMetConf(m)}>{m}</button>)}</div>
       <Calor titulo={`Matriz de confusão · ${metConf} · linha = categoria real, coluna = prevista`} linhas={CLASSES.map(c => NOME[c])}
         colunas={CLASSES.map(c => NOME[c])} valores={confPct} max={1} formato={x => `${Math.round(x * 100)}%`} rotuloValor="dos fluxos da linha" />
+      <TabelaDados titulo="Skype e outras aplicações · Etapa 9" cabecalho={["Modelo", "Categoria", "Aplicações", "Fluxos", "Acerto"]}
+        linhas={exp.skype.map(r => [r.metodo, r.categoria, r.apps, r.n, `${num(r["acerto_%"], 1)}%`])} />
     </Reveal>
 
     <Reveal className={s.block}>
       <header className={s.blockHead}><span className="eyebrow">06 · O que o modelo olha</span><h2 className="display">Os primeiros pacotes dizem quase tudo.</h2>
-        <p>Cada coluna representa um dos 32 primeiros pacotes. Ao esconder um pacote por vez, o gráfico mede quanto cai a pontuação da classe prevista. Células mais escuras indicam maior queda; isso mostra sensibilidade, não a causa da decisão.</p></header>
+        <p>As figuras originais do estudo mostram a queda média na probabilidade da classe prevista ao esconder cada um dos 32 primeiros pacotes, no cenário N com 100% dos rótulos e semente 0. A cor pode representar aumento ou queda; isso mostra sensibilidade, não a causa da decisão.</p></header>
       <div className={s.toggle} role="group" aria-label="Modelo da oclusão">
         {(["B2", "P"] as const).map(m => <button key={m} type="button" aria-pressed={metOcl === m} onClick={() => setMetOcl(m)}>{m}</button>)}</div>
-      <Calor titulo={`Queda média de probabilidade ao esconder o pacote · ${metOcl}`} linhas={CLASSES.map(c => NOME[c])}
-        colunas={Array.from({ length: 32 }, (_, i) => String(i + 1))} valores={ocl.queda.map(l => l.map(x => x == null ? null : Math.max(0, x)))}
-        mostrarValores={false} formato={x => num(x, 3)} rotuloValor="queda média"
-        nota={`Posições mais influentes: ${CLASSES.map(c => `${NOME[c]} ${ocl.top3[c]?.join(", ")}`).join(" · ")}. Células com menos de 5 fluxos ficam vazias.`} />
+      <figure className={s.studyFigure}><Image src={`/resultados-estudo/oclusao_${metOcl}.png`} width={1650} height={480}
+        alt={`Oclusão do modelo ${metOcl}: mapa de calor por classe e posição de pacote, cenário N, 100% dos rótulos, semente 0`}
+        className={s.studyImage} /><figcaption>Figura original do trabalho · {metOcl} · semente 0</figcaption></figure>
     </Reveal>
 
     <Reveal className={s.block}>
@@ -188,7 +184,7 @@ export function Resultados({ exp }: { exp: Dados }) {
     </Reveal>
 
     <footer className={s.fim}>
-      <p className="font-mono">{exp.dados.fluxos.toLocaleString("pt-BR")} fluxos · {(exp.dados.completos_32 * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}% com 32 pacotes · passos de ajuste escolhidos na validação: {exp.passos.escolhidos.toLocaleString("pt-BR")} · {exp.hardware}</p>
+      <p className="font-mono">{exp.n_execucoes} execuções finais · fonte: resultados.csv e tabelas da Etapa 9 · {exp.hardware}</p>
       <div className={s.fimLinks}><Link href="/metodologia" className="ui-button ui-button--secondary">Como foi feito</Link>
         <Link href="/enviar" className="ui-button ui-button--primary">Analisar meus arquivos <span className="ui-button__arrow" aria-hidden>→</span></Link></div>
     </footer>

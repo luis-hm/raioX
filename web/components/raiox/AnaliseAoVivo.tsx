@@ -185,7 +185,7 @@ export function AnaliseAoVivo({ dados }: { dados: DadosAoVivo }) {
       <aside className={s.side}>
         {concluida && <div className={s.done}>
           <p className="eyebrow">Resultado do teste completo · 5 versões de treino</p>
-          <p className={s.doneHelp}>Macro-F1 vai de 0 a 1; quanto maior, melhor o desempenho equilibrado entre as cinco categorias. É a média de cinco treinamentos, não a pontuação do seu ZIP.</p>
+          <p className={s.doneHelp}>Macro-F1 da simulação original do trabalho, média de cinco treinamentos. A amostra visual acima usa modelos da reexecução local; seus acertos não entram nesses números.</p>
           <div className={s.doneScores}>{(["B1", "B2", "P"] as const).map(m => <span key={m}><span className={`ui-chip ui-chip--${m.toLowerCase()}`}>{m}</span>
             <strong className="font-mono">{dados.macroF1[m].toLocaleString("pt-BR", { minimumFractionDigits: 3, maximumFractionDigits: 3 })}</strong></span>)}</div>
           <Link href="/resultados" className="ui-button ui-button--primary">Abrir resultados <span className="ui-button__arrow" aria-hidden>→</span></Link>

@@ -41,6 +41,45 @@ export type Experimento = {
   amostra: FluxoAmostra[];
 };
 
+/** Tabelas finais da simulação original, separadas da reexecução usada nos uploads. */
+export type ResultadoEstudo = Pick<Experimento,
+  "hardware" | "medias" | "testes" | "h1" | "h3" | "custo" | "f1_por_classe" |
+  "confusao" | "exposicao" | "vereditos"> & {
+  n_execucoes: number;
+  skype: { metodo: string; categoria: string; apps: string; n: number; "acerto_%": number }[];
+};
+
+export function carregarResultadosEstudo(): ResultadoEstudo | null {
+  const caminho = join(process.cwd(), "data", "resultados_estudo.json");
+  if (!existsSync(caminho)) return null;
+  return JSON.parse(readFileSync(caminho, "utf8")) as ResultadoEstudo;
+}
+
+export type MetodologiaEstudo = {
+  fonte: string;
+  periodo: [string, string];
+  hardware: string;
+  n_execucoes: number;
+  execucoes: Record<"C1" | "C2" | "C3" | "C4" | "X1", number>;
+  dados: {
+    capturas_total: number; tamanho_gb: number; capturas_incluidas: number;
+    videochamadas_excluidas: number; fluxos: number; principais: number; extras: number;
+    completos_32: number; por_aplicacao: { categoria: string; aplicacao: string; arquivos: number; sessoes: number; fluxos: number }[];
+    acima_1500: { acima_1500: number; pacotes_32: number };
+    blocos_temporais: string[];
+    teste5: Record<string, { duplicados: number; teste: number }>;
+  };
+  passos: { escolhidos: number; curva: { passos: number; media: number }[] };
+  fracoes: { cenario: string; fracao: string; total: number }[];
+  particoes_s0: { cenario: string; treino: number; validacao: number; teste: number }[];
+};
+
+export function carregarMetodologiaEstudo(): MetodologiaEstudo | null {
+  const caminho = join(process.cwd(), "data", "metodologia_estudo.json");
+  if (!existsSync(caminho)) return null;
+  return JSON.parse(readFileSync(caminho, "utf8")) as MetodologiaEstudo;
+}
+
 export function carregarExperimento(): Experimento | null {
   const caminho = join(process.cwd(), "data", "experimento.json");
   if (!existsSync(caminho)) return null;

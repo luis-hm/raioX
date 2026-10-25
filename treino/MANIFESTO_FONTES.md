@@ -25,6 +25,20 @@ As cópias selecionadas estão em `../resultados_referencia/`. Não editar essas
 cópias manualmente; alterações científicas devem ser feitas na fonte do
 experimento e então copiadas novamente com atualização deste manifesto.
 
+Para a página `/resultados`, também foram obtidos diretamente da pasta
+compartilhada `trabalho de redes/projeto_trafego/resultados/`:
+`exposicao_informacao.csv` (em `auxiliares/`), as 15 previsões finais de
+`previsoes/C1_N_*_frac100_seed*.npz` (em `previsoes/`) e as figuras
+`figuras/oclusao_B2.png` e `figuras/oclusao_P.png` (em
+`web/public/resultados-estudo/`). `resultados_referencia/gerar_painel.py`
+recria `web/data/resultados_estudo.json` usando essas fontes e as cinco tabelas
+acima. O `resultados.csv` e as quatro tabelas da Etapa 9 foram conferidos
+byte a byte com o Drive em 25/10/2026.
+
+A metodologia também usa `contagem_por_aplicacao.csv`, `contagem_particoes.csv`,
+`contagem_fracoes.csv` e `escolha_passos_c1.csv`, copiados sem alterações para
+`auxiliares/`. O mesmo gerador produz `web/data/metodologia_estudo.json`.
+
 ## Excluídos das referências servidas
 
 - `resultados/resultados_piloto.csv` e `resultados/resultados_piloto_v2.csv`:
@@ -38,9 +52,9 @@ experimento e então copiadas novamente com atualização deste manifesto.
   dados processados de grande porte; não fazem parte desta preparação.
 - `modelos/*.pt`:
   checkpoints de pré-treinamento; não fazem parte desta preparação.
-- Outras tabelas auxiliares, logs, scripts e figuras do ZIP não foram copiadas
-  porque não são as tabelas finais de resultados solicitadas para esta tarefa.
+- Outras tabelas auxiliares, logs, scripts e figuras não usados na página de
+  resultados não foram copiados.
 
 Os arquivos excluídos permanecem na fonte extraída; esta organização não os
 removeu. Somente `resultados_referencia/` deve ser tratado como fonte tabular
-para os gráficos do Raio-X.
+para os gráficos científicos do Raio-X.
