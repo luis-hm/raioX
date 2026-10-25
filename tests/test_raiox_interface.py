@@ -260,11 +260,12 @@ class TestRaioXInterface(unittest.TestCase):
         self.assertIn("classe_prevista: '=1+1'", contract)
 
     def test_ac_020_metodologia_carrega_csvs_corrigidos(self):
-        """Metodologia e resultados leem as 250 execuções refeitas a partir dos pcaps @spec:AC-020"""
+        """Metodologia e resultados publicados usam as tabelas finais do estudo @spec:AC-020"""
         import json
         metodo = (WEB / "app" / "metodologia" / "page.tsx").read_text(encoding="utf-8")
         resultados = (WEB / "components" / "raiox" / "Resultados.tsx").read_text(encoding="utf-8")
-        self.assertIn("carregarExperimento()", metodo)
+        self.assertIn("carregarMetodologiaEstudo()", metodo)
+        self.assertNotIn("carregarExperimento()", metodo)
         self.assertIn("exp.vereditos", resultados)
         self.assertIn("Diferença não significativa não prova ausência de efeito", resultados)
         dados = WEB / "data" / "experimento.json"
@@ -278,6 +279,12 @@ class TestRaioXInterface(unittest.TestCase):
         self.assertEqual(exp["consistencia_c4"], 0.0)
         self.assertEqual(set(exp["vereditos"]), {"H1", "H2", "H3", "H4"})
         self.assertTrue(all(len(m) == 5 for m in exp["confusao"]["N|P"]))
+
+        estudo = json.loads((WEB / "data" / "metodologia_estudo.json").read_text(encoding="utf-8"))
+        self.assertEqual(estudo["n_execucoes"], 250)
+        self.assertEqual(estudo["passos"]["escolhidos"], 4000)
+        self.assertEqual(estudo["periodo"], ["2026-10-15", "2026-10-16"])
+        self.assertEqual(estudo["dados"]["fluxos"], 5653)
 
     def test_ac_017_polling_usa_estados_reais_e_contadores(self):
         """Polling percorre estados recebidos, preserva pacotes lidos e para em pronta/erro/404 @spec:AC-017"""

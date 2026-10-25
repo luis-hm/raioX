@@ -1,27 +1,30 @@
 import Link from "next/link";
-import { carregarExperimento } from "@/lib/experimento";
+import { carregarMetodologiaEstudo } from "@/lib/experimento";
 import s from "@/components/raiox/metodo.module.css";
 
 export const metadata = { title: "Metodologia" };
 
 const NOME: Record<string, string> = { chat: "Chat", email: "E-mail", transferencia: "Transferência", streaming: "Streaming", voip: "VoIP" };
 const n = (v: number) => v.toLocaleString("pt-BR");
+const dataBR = (data: string) => `${data.slice(8, 10)}/${data.slice(5, 7)}/${data.slice(0, 4)}`;
 const SECOES = [
   ["problema", "O problema"], ["base", "Base de dados"], ["extracao", "Extração dos fluxos"], ["matriz", "Matriz 32 × 4"],
   ["divisao", "Divisão sem vazamento"], ["metodos", "Os três métodos"], ["cenarios", "Cenários"], ["estatistica", "Análise estatística"], ["limites", "Limitações"],
 ] as const;
 
 export default function Page() {
-  const exp = carregarExperimento();
-  const d = exp?.dados;
-  const contagem = (c: string) => exp?.execucoes.filter(e => e.cenario === c).length ?? 0;
+  const exp = carregarMetodologiaEstudo();
+  if (!exp) return <div className="ui-state"><h1 className="ui-state__title">Metodologia ainda não disponível</h1>
+    <p className="ui-state__description">Os dados finais do estudo ainda não estão disponíveis neste ambiente.</p></div>;
+  const d = exp.dados;
+  const contagem = (c: keyof typeof exp.execucoes) => exp.execucoes[c];
 
   return <div className={s.page}>
     <header className={s.head}>
       <p className="eyebrow">Metodologia</p>
       <h1 className="display">Como o raio-X foi feito.</h1>
       <p className={s.lead}>O protocolo foi definido antes de rodar os experimentos e seguido do pcap bruto até o teste estatístico.
-        Os números desta página são os desta execução{d ? `: ${n(d.capturas_incluidas)} capturas, ${n(d.fluxos)} fluxos e ${n(exp!.execucoes.length)} execuções` : ""}.</p>
+        Os números desta página vêm da simulação final do trabalho: {n(d.capturas_incluidas)} capturas, {n(d.fluxos)} fluxos e {n(exp.n_execucoes)} execuções.</p>
     </header>
 
     <div className={s.layout}>
@@ -39,14 +42,14 @@ export default function Page() {
         </section>
 
         <section id="base"><h2>Base de dados</h2>
-          <p>ISCX VPN-nonVPN (2016), só o tráfego sem VPN{d ? `: ${n(d.capturas_total)} capturas, ${d.tamanho_gb.toLocaleString("pt-BR")} GB` : ""}.
-            A base não tem coluna de categoria; o rótulo vem do nome do arquivo. {d ? `${n(d.excluidas.length)} videochamadas` : "As videochamadas"} ficam
+          <p>ISCX VPN-nonVPN (2016), só o tráfego sem VPN: {n(d.capturas_total)} capturas, {d.tamanho_gb.toLocaleString("pt-BR")} GB.
+            A base não tem coluna de categoria; o rótulo vem do nome do arquivo. {n(d.videochamadas_excluidas)} videochamadas ficam
             de fora porque podem ser VoIP ou streaming. Os arquivos “a” e “b” de uma gravação são a mesma sessão registrada em duas pontas.</p>
-          {d && <div className="ui-table-scroll"><table className="ui-table">
+          <div className="ui-table-scroll"><table className="ui-table">
             <thead><tr><th>Categoria</th><th>Aplicação</th><th>Arquivos</th><th>Sessões</th><th>Fluxos</th></tr></thead>
             <tbody>{d.por_aplicacao.map(r => <tr key={r.categoria + r.aplicacao}><td>{NOME[r.categoria]}</td><td>{r.aplicacao}</td>
               <td className="font-mono">{r.arquivos}</td><td className="font-mono">{r.sessoes}</td><td className="font-mono">{n(r.fluxos)}</td></tr>)}</tbody>
-          </table></div>}
+          </table></div>
         </section>
 
         <section id="extracao"><h2>Extração dos fluxos</h2>
@@ -57,9 +60,9 @@ export default function Page() {
               ["Direção", "quem envia o primeiro pacote com carga é o cliente (+)"], ["Privacidade", "IP e porta só agrupam, em memória; nada de payload é gravado"],
             ].map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
           </dl>
-          {d && <p className={s.note}>Nesta execução: {n(d.fluxos)} fluxos ({n(d.principais)} principais e {n(d.extras)} extras, usados só no pré-treino).
+          <p className={s.note}>No estudo original: {n(d.fluxos)} fluxos ({n(d.principais)} principais e {n(d.extras)} extras, usados só no pré-treino).
             {" "}{(d.acima_1500.acima_1500 / Math.max(1, d.acima_1500.pacotes_32) * 100).toLocaleString("pt-BR", { maximumFractionDigits: 2 })}% dos pacotes passavam de 1.500 bytes e foram limitados;
-            só {(d.completos_32 * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}% dos fluxos chegam a 32 pacotes.</p>}
+            só {(d.completos_32 * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}% dos fluxos chegam a 32 pacotes.</p>
         </section>
 
         <section id="matriz"><h2>Matriz 32 × 4</h2>
@@ -77,12 +80,20 @@ export default function Page() {
             reconheceria a conversa, não o tipo de tráfego. São cinco sementes (0 a 4) para três cenários:</p>
           <ul className={s.list}>
             <li><b>N — aplicações vistas.</b> Em cada aplicação, sessões sorteadas em ~70/15/15 (treino/validação/teste).
-              {d ? ` Aplicações com menos de 3 sessões (${d.testes.blocos_temporais.join(", ")}) usam blocos temporais dentro de cada arquivo.` : ""}</li>
+              Aplicações com menos de 3 sessões ({d.blocos_temporais.join(", ")}) usam blocos temporais dentro de cada arquivo.</li>
             <li><b>A1 e A2 — aplicações não vistas.</b> A1 retira Skype, YouTube e email1; A2 retira Facebook, FTPS, Netflix e email2. Elas ficam só no teste, fora do treino e do pré-treino.</li>
             <li><b>Frações de rótulos.</b> 1%, 5%, 10% e 100% do treino, estratificadas por classe (mínimo de 5), aninhadas e iguais para os três métodos.</li>
           </ul>
-          {d && <p className={s.note}>Testes automáticos 1 a 4 (só matrizes e rótulos; nenhuma sessão em duas partições; pré-treino só com treino; frações aninhadas e reproduzíveis) passaram.
-            Teste 5, cópias exatas entre treino e teste na semente 0: {Object.entries(d.testes.teste5).map(([k, v]) => `${k} ${v.duplicados}/${n(v.teste)}`).join(" · ")}.</p>}
+          <p className={s.note}>Testes automáticos 1 a 4 (só matrizes e rótulos; nenhuma sessão em duas partições; pré-treino só com treino; frações aninhadas e reproduzíveis) passaram.
+            Teste 5, cópias exatas entre treino e teste na semente 0: {Object.entries(d.teste5).map(([k, v]) => `${k} ${v.duplicados}/${n(v.teste)}`).join(" · ")}.</p>
+          <details className={s.methodSpecs}><summary>Ver tamanhos das partições · semente 0</summary>
+            <div className="ui-table-scroll"><table className="ui-table"><thead><tr><th>Cenário</th><th>Treino</th><th>Validação</th><th>Teste</th></tr></thead>
+              <tbody>{exp.particoes_s0.map(r => <tr key={r.cenario}><td>{r.cenario}</td><td>{n(r.treino)}</td><td>{n(r.validacao)}</td><td>{n(r.teste)}</td></tr>)}</tbody></table></div>
+          </details>
+          <details className={s.methodSpecs}><summary>Ver quantidade de fluxos rotulados por fração</summary>
+            <div className="ui-table-scroll"><table className="ui-table"><thead><tr><th>Cenário</th><th>Fração</th><th>Fluxos rotulados</th></tr></thead>
+              <tbody>{exp.fracoes.map(r => <tr key={`${r.cenario}-${r.fracao}`}><td>{r.cenario}</td><td>{r.fracao}</td><td>{n(r.total)}</td></tr>)}</tbody></table></div>
+          </details>
         </section>
 
         <section id="metodos"><h2>Os três métodos</h2>
@@ -130,10 +141,10 @@ export default function Page() {
           </div>
           <div className={s.trainingChoice}>
             <div><span className="eyebrow">Treino das CNNs</span><h3>O que são os passos?</h3></div>
-            <div><p>Um passo é uma atualização da rede com um lote de fluxos.{exp ? ` Nesta execução, B2 e P usaram ${n(exp.passos.escolhidos)} passos.` : ""} O número foi escolhido pela validação de C1 nas sementes 0–2: o menor valor que ficou a até 0,01 do melhor macro-F1 médio. O conjunto de teste só foi usado depois, para medir o resultado final.</p>
-              {exp && <details className={s.methodSpecs}><summary>Ver pontuações usadas na escolha de {n(exp.passos.escolhidos)} passos</summary>
-                <p>{exp.passos.curva.map(c => `${n(c.passos)} passos: ${c.mean.toLocaleString("pt-BR", { maximumFractionDigits: 3 })}`).join(" · ")}.</p>
-              </details>}
+            <div><p>Um passo é uma atualização da rede com um lote de fluxos. No estudo original, B2 e P usaram {n(exp.passos.escolhidos)} passos. O número foi escolhido pela validação de C1 nas sementes 0–2: o menor valor que ficou a até 0,01 do melhor macro-F1 médio. O conjunto de teste só foi usado depois, para medir o resultado final.</p>
+              <details className={s.methodSpecs}><summary>Ver pontuações usadas na escolha de {n(exp.passos.escolhidos)} passos</summary>
+                <p>{exp.passos.curva.map(c => `${n(c.passos)} passos: ${c.media.toLocaleString("pt-BR", { maximumFractionDigits: 3 })}`).join(" · ")}.</p>
+              </details>
             </div>
           </div>
         </section>
@@ -165,7 +176,7 @@ export default function Page() {
             <li>A perda de pacotes é simulada e uniforme; perdas reais vêm em rajadas e com retransmissões.</li>
             <li>Os primeiros pacotes, que incluem o handshake, pesam muito; o modelo pode estar aprendendo mais o início da conexão que o comportamento.</li>
           </ul>
-          {exp && <p className={s.note}>Execução: {exp.hardware} · {new Date(exp.gerado_em).toLocaleString("pt-BR")}.</p>}
+          <p className={s.note}>Fonte: resultados finais do trabalho, registrados entre {dataBR(exp.periodo[0])} e {dataBR(exp.periodo[1])}. Ambiente do estudo: {exp.hardware}.</p>
         </section>
       </article>
     </div>

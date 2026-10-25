@@ -22,7 +22,7 @@ O **Raio-X do Tráfego** é um site de portfólio para explorar como os modelos 
 
 **Fonte de verdade do experimento:** dentro do ZIP do trabalho, os documentos atualizados em `doc_etapas_att/`, especialmente o relatório final `10.docx`, os scripts da Etapa 5 no notebook `rede` e os de Etapas 6–8 em `projeto_trafego/scripts/`, `projeto_trafego/resultados/resultados.csv` e as tabelas estatísticas da Etapa 9. As versões antigas, pilotos e arquivos `antes_correcao_P` ficam fora dos gráficos finais. O estudo usou 98 capturas sem VPN do ISCX, produziu 5.653 fluxos e registrou 250 execuções; a proposta do site acrescenta funcionalidades que não fizeram parte desse protocolo.
 
-As tabelas finais publicadas em `resultados_referencia/` têm origem, contagem e SHA-256 em [`resultados_referencia/manifesto.json`](../resultados_referencia/manifesto.json). Ficam como registro do relatório original: o site passou a exibir só os resultados da reexecução (`web/data/experimento.json`).
+As cinco tabelas finais publicadas em `resultados_referencia/` têm origem, contagem e SHA-256 em [`resultados_referencia/manifesto.json`](../resultados_referencia/manifesto.json). A página `/resultados` e o macro-F1 final de `/analise` usam a simulação original do trabalho, consolidada em `web/data/resultados_estudo.json` por `resultados_referencia/gerar_painel.py`. As figuras de oclusão, a tabela de exposição de informação e as 15 previsões C1/N/100% vieram da mesma pasta compartilhada. Uploads, exemplos e a demonstração visual continuam usando os modelos da reexecução local (`web/data/experimento.json`).
 
 ## O que o sistema faz
 
@@ -65,7 +65,7 @@ sem usar os dados processados nem os resultados anteriores:
 Os dados da Etapa 5 reproduziram exatamente os do relatório: 98 capturas incluídas, 5.653 fluxos (5.457 principais e 196 extras),
 4.082 de 70.847 pacotes acima de 1.500 bytes, blocos temporais em Skype chat, Thunderbird e FTPS, e nenhuma cópia exata entre treino e teste
 (0 de 1.050 em N, 0 de 2.076 em A1, 0 de 1.415 em A2). As CNNs treinam em GPU (RTX 4050, PyTorch 2.11 + CUDA 12.8); o hardware difere da T4
-do Colab, então os números de treino não são idênticos aos do relatório. O site mostra apenas os resultados desta execução.
+do Colab, então os números de treino não são idênticos aos do relatório. Os resultados científicos exibidos em `/resultados` vêm do estudo original; a reexecução local alimenta as análises de fluxo.
 
 Os modelos usados nas análises de upload e nos exemplos são os de N com 100% dos rótulos desta execução (cinco sementes), exportados com a verificação
 de que o ONNX preserva a classe prevista e reproduz as previsões registradas em C1.
@@ -81,7 +81,7 @@ em paralelo, o visitante pode enviar os próprios arquivos.
    A tela reproduz, no ritmo de uma execução ao vivo, os números reais de `web/data/experimento.json`; termina no macro-F1 médio de C1 e leva aos resultados.
 3. **Resultados (`/resultados`).** Veredito de H1–H4 com a evidência de cada um; C1/C2, C3, C4, custo, codificador congelado; F1 por classe, matriz de
    confusão, oclusão, exposição de informação e a tabela de todos os testes pareados.
-4. **Metodologia (`/metodologia`).** O protocolo, do pcap ao teste estatístico, com a base por aplicação e as contagens desta execução.
+4. **Metodologia (`/metodologia`).** O protocolo, do pcap ao teste estatístico, com as contagens, partições, escolha de 4.000 passos e ambiente da simulação original (`web/data/metodologia_estudo.json`).
 5. **Enviar (`/enviar`) → Processando e Painel (`/a/{id}`) → Raio-X (`/a/{id}/fluxo/{n}`).** Upload de `.pcap`, `.pcapng` ou `.zip`; estado real da API;
    painel com concordância, distribuição dos palpites, mapa temporal e tabela; raio-X do fluxo com escada de pacotes, matriz 32×4, prefixos e oclusão.
    Os cinco exemplos do ISCX abrem um caso de um fluxo, com o aviso das sementes em que o fluxo esteve no treino.
@@ -138,7 +138,7 @@ Um repositório só (monorepo), com o front, a API e o worker em pastas separada
 raiox/
 ├── web/                    # Next.js
 │   ├── app/                # rotas: /, /analise, /resultados, /metodologia, /enviar, /a/[id], /a/[id]/fluxo/[n]
-│   ├── data/               # experimento.json: resultado da reexecução, lido pelas páginas
+│   ├── data/               # experimento.json: reexecução; resultados_estudo.json e metodologia_estudo.json: estudo original
 │   └── components/         # Upload, Resumo, TabelaFluxos, RaioX, MatrizView
 ├── api/                    # FastAPI
 │   ├── main.py             # rotas

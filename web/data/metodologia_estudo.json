@@ -1,0 +1,341 @@
+{
+  "fonte": "Simulação final do trabalho de redes",
+  "n_execucoes": 250,
+  "periodo": [
+    "2026-10-15",
+    "2026-10-16"
+  ],
+  "hardware": "Intel(R) Xeon(R) CPU @ 2.00GHz | Tesla T4 | 2 CPUs | torch 2.11.0+cu130",
+  "execucoes": {
+    "C1": 15,
+    "C2": 45,
+    "C3": 60,
+    "C4": 90,
+    "X1": 40
+  },
+  "dados": {
+    "capturas_total": 109,
+    "tamanho_gb": 25.13,
+    "capturas_incluidas": 98.0,
+    "videochamadas_excluidas": 11,
+    "fluxos": 5653.0,
+    "principais": 5457.0,
+    "extras": 196.0,
+    "completos_32": 0.1562002476561118,
+    "por_aplicacao": [
+      {
+        "categoria": "chat",
+        "aplicacao": "AIM",
+        "arquivos": 4.0,
+        "sessoes": 3.0,
+        "fluxos": 39.0
+      },
+      {
+        "categoria": "chat",
+        "aplicacao": "Facebook",
+        "arquivos": 5.0,
+        "sessoes": 4.0,
+        "fluxos": 60.0
+      },
+      {
+        "categoria": "chat",
+        "aplicacao": "Hangouts",
+        "arquivos": 5.0,
+        "sessoes": 4.0,
+        "fluxos": 179.0
+      },
+      {
+        "categoria": "chat",
+        "aplicacao": "ICQ",
+        "arquivos": 4.0,
+        "sessoes": 3.0,
+        "fluxos": 37.0
+      },
+      {
+        "categoria": "chat",
+        "aplicacao": "Skype",
+        "arquivos": 2.0,
+        "sessoes": 1.0,
+        "fluxos": 329.0
+      },
+      {
+        "categoria": "email",
+        "aplicacao": "Thunderbird",
+        "arquivos": 4.0,
+        "sessoes": 2.0,
+        "fluxos": 506.0
+      },
+      {
+        "categoria": "streaming",
+        "aplicacao": "Netflix",
+        "arquivos": 4.0,
+        "sessoes": 4.0,
+        "fluxos": 72.0
+      },
+      {
+        "categoria": "streaming",
+        "aplicacao": "Spotify",
+        "arquivos": 4.0,
+        "sessoes": 4.0,
+        "fluxos": 96.0
+      },
+      {
+        "categoria": "streaming",
+        "aplicacao": "Vimeo",
+        "arquivos": 4.0,
+        "sessoes": 4.0,
+        "fluxos": 204.0
+      },
+      {
+        "categoria": "streaming",
+        "aplicacao": "YouTube",
+        "arquivos": 7.0,
+        "sessoes": 7.0,
+        "fluxos": 174.0
+      },
+      {
+        "categoria": "transferencia",
+        "aplicacao": "FTPS",
+        "arquivos": 4.0,
+        "sessoes": 2.0,
+        "fluxos": 245.0
+      },
+      {
+        "categoria": "transferencia",
+        "aplicacao": "SFTP/SCP",
+        "arquivos": 20.0,
+        "sessoes": 18.0,
+        "fluxos": 371.0
+      },
+      {
+        "categoria": "transferencia",
+        "aplicacao": "Skype",
+        "arquivos": 8.0,
+        "sessoes": 8.0,
+        "fluxos": 757.0
+      },
+      {
+        "categoria": "voip",
+        "aplicacao": "Facebook",
+        "arquivos": 6.0,
+        "sessoes": 4.0,
+        "fluxos": 867.0
+      },
+      {
+        "categoria": "voip",
+        "aplicacao": "Hangouts",
+        "arquivos": 6.0,
+        "sessoes": 4.0,
+        "fluxos": 810.0
+      },
+      {
+        "categoria": "voip",
+        "aplicacao": "Skype",
+        "arquivos": 6.0,
+        "sessoes": 4.0,
+        "fluxos": 596.0
+      },
+      {
+        "categoria": "voip",
+        "aplicacao": "VoipBuster",
+        "arquivos": 5.0,
+        "sessoes": 4.0,
+        "fluxos": 311.0
+      }
+    ],
+    "acima_1500": {
+      "acima_1500": 4082,
+      "pacotes_32": 70847
+    },
+    "blocos_temporais": [
+      "chat/Skype",
+      "email/Thunderbird",
+      "transferencia/FTPS"
+    ],
+    "teste5": {
+      "N": {
+        "duplicados": 0,
+        "teste": 1050
+      },
+      "A1": {
+        "duplicados": 0,
+        "teste": 2076
+      },
+      "A2": {
+        "duplicados": 0,
+        "teste": 1415
+      }
+    }
+  },
+  "passos": {
+    "escolhidos": 4000,
+    "curva": [
+      {
+        "passos": 500.0,
+        "media": 0.5095665335801726
+      },
+      {
+        "passos": 1000.0,
+        "media": 0.560203709882899
+      },
+      {
+        "passos": 1500.0,
+        "media": 0.5417618205497591
+      },
+      {
+        "passos": 2000.0,
+        "media": 0.529853553150903
+      },
+      {
+        "passos": 3000.0,
+        "media": 0.5388704644164303
+      },
+      {
+        "passos": 4000.0,
+        "media": 0.5836761043314369
+      }
+    ]
+  },
+  "fracoes": [
+    {
+      "cenario": "N",
+      "fracao": "1%",
+      "total": 42.0,
+      "chat": 5.0,
+      "email": 5.0,
+      "transferencia": 13.0,
+      "streaming": 5.0,
+      "voip": 14.0
+    },
+    {
+      "cenario": "N",
+      "fracao": "5%",
+      "total": 188.0,
+      "chat": 21.0,
+      "email": 18.0,
+      "transferencia": 64.0,
+      "streaming": 18.0,
+      "voip": 67.0
+    },
+    {
+      "cenario": "N",
+      "fracao": "10%",
+      "total": 374.0,
+      "chat": 41.0,
+      "email": 36.0,
+      "transferencia": 128.0,
+      "streaming": 36.0,
+      "voip": 133.0
+    },
+    {
+      "cenario": "N",
+      "fracao": "100%",
+      "total": 3707.0,
+      "chat": 402.0,
+      "email": 355.0,
+      "transferencia": 1272.0,
+      "streaming": 355.0,
+      "voip": 1323.0
+    },
+    {
+      "cenario": "A1",
+      "fracao": "1%",
+      "total": 36.0,
+      "chat": 5.0,
+      "email": 5.0,
+      "transferencia": 5.0,
+      "streaming": 5.0,
+      "voip": 16.0
+    },
+    {
+      "cenario": "A1",
+      "fracao": "5%",
+      "total": 148.0,
+      "chat": 14.0,
+      "email": 13.0,
+      "transferencia": 25.0,
+      "streaming": 16.0,
+      "voip": 80.0
+    },
+    {
+      "cenario": "A1",
+      "fracao": "10%",
+      "total": 293.0,
+      "chat": 28.0,
+      "email": 25.0,
+      "transferencia": 49.0,
+      "streaming": 31.0,
+      "voip": 160.0
+    },
+    {
+      "cenario": "A1",
+      "fracao": "100%",
+      "total": 2893.0,
+      "chat": 272.0,
+      "email": 243.0,
+      "transferencia": 486.0,
+      "streaming": 301.0,
+      "voip": 1591.0
+    },
+    {
+      "cenario": "A2",
+      "fracao": "1%",
+      "total": 41.0,
+      "chat": 5.0,
+      "email": 5.0,
+      "transferencia": 12.0,
+      "streaming": 5.0,
+      "voip": 14.0
+    },
+    {
+      "cenario": "A2",
+      "fracao": "5%",
+      "total": 174.0,
+      "chat": 23.0,
+      "email": 10.0,
+      "transferencia": 56.0,
+      "streaming": 16.0,
+      "voip": 69.0
+    },
+    {
+      "cenario": "A2",
+      "fracao": "10%",
+      "total": 347.0,
+      "chat": 46.0,
+      "email": 19.0,
+      "transferencia": 112.0,
+      "streaming": 32.0,
+      "voip": 138.0
+    },
+    {
+      "cenario": "A2",
+      "fracao": "100%",
+      "total": 3447.0,
+      "chat": 455.0,
+      "email": 187.0,
+      "transferencia": 1113.0,
+      "streaming": 316.0,
+      "voip": 1376.0
+    }
+  ],
+  "particoes_s0": [
+    {
+      "cenario": "N",
+      "treino": 3707.0,
+      "validacao": 700.0,
+      "teste": 1050.0
+    },
+    {
+      "cenario": "A1",
+      "treino": 2893.0,
+      "validacao": 488.0,
+      "teste": 2076.0
+    },
+    {
+      "cenario": "A2",
+      "treino": 3447.0,
+      "validacao": 595.0,
+      "teste": 1415.0
+    }
+  ]
+}
