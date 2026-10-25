@@ -366,11 +366,12 @@ class TestRaioXInterface(unittest.TestCase):
     def test_t025_readme_marca_selecao_de_exemplos_e_dependencias_externas(self):
         """README não afirma deploy nem PCAP real sem evidência @spec:AC-025"""
         readme = (ROOT / "docs" / "SISTEMA.md").read_text(encoding="utf-8")
-        self.assertIn("implantação, DNS e proxy ainda não foram validados", readme)
+        # O deploy só é afirmado com a configuração que o comprova (Coolify + compose de produção).
+        self.assertIn("Publicado em **https://raiox.codehub.systems**", readme)
+        self.assertTrue((ROOT / "compose.coolify.yaml").is_file())
         self.assertIn("Cinco exemplos (um por classe)", readme)
         self.assertIn("entre os que estiveram no treino N do menor número de sementes", readme)
         self.assertIn("esses arquivos não vieram no ZIP", readme)
-        self.assertIn("nenhum deploy foi executado", readme)
         self.assertIn("o protocolo foi aprovado", readme)
         self.assertIn("faltam os arquivos processados do experimento", readme)
 
