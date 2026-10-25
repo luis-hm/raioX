@@ -23,4 +23,7 @@ COPY --from=builder --chown=node:node /app/public ./public
 COPY --from=builder --chown=node:node /app/resultados_referencia ./resultados_referencia
 USER node
 
+# O proxy do Coolify (Traefik) descobre a porta do serviço por aqui.
+EXPOSE 3000
+
 CMD ["node", "server.js"]
