@@ -17,7 +17,7 @@ O **Raio-X do Tráfego** é um site de portfólio para explorar como os modelos 
 | Backend | FastAPI (Python) | Leitura de pcap e modelos já estão em Python |
 | Frontend | Next.js + Tailwind | Mesma base do Certame |
 | Contas | Sem login | Cada análise tem um link próprio e expira em 7 dias |
-| Hospedagem | VPS Hostinger (KVM 2), Docker Compose | Proposta original; implantação, DNS e proxy ainda não foram validados nem configurados por este projeto |
+| Hospedagem | VPS com Coolify, recurso Docker Compose | Publicado em 25/10/2026 em https://raiox.codehub.systems (`compose.coolify.yaml`), com HTTPS do Let's Encrypt |
 | Endereço | `raiox.codehub.systems` (sugestão) | Não configurado; depende da decisão e do acesso ao domínio |
 
 **Fonte de verdade do experimento:** dentro do ZIP do trabalho, os documentos atualizados em `doc_etapas_att/`, especialmente o relatório final `10.docx`, os scripts da Etapa 5 no notebook `rede` e os de Etapas 6–8 em `projeto_trafego/scripts/`, `projeto_trafego/resultados/resultados.csv` e as tabelas estatísticas da Etapa 9. As versões antigas, pilotos e arquivos `antes_correcao_P` ficam fora dos gráficos finais. O estudo usou 98 capturas sem VPN do ISCX, produziu 5.653 fluxos e registrou 250 execuções; a proposta do site acrescenta funcionalidades que não fizeram parte desse protocolo.
@@ -245,19 +245,23 @@ Um `.pcap` pode conter conteúdo sensível, especialmente quando a comunicação
 - Se houver Caddy/proxy reverso, configurar o Uvicorn para confiar cabeçalhos de proxy apenas do endereço/rede desse proxy (`--forwarded-allow-ips` restrito); não confiar em `X-Forwarded-For` de clientes arbitrários. Sem proxy confiável, o limite usa o endereço da conexão recebido pela API.
 - Agendar diariamente `python -m worker.limpeza`; remove análises com `expira_em <= UTC agora` e arquivos regulares com nome gerado pela API há pelo menos uma hora. O limite excede o processamento máximo de cinco minutos para preservar uploads recentes/ativos.
 
-## Deploy na VPS — infraestrutura ainda pendente
+## Deploy no Coolify
 
-A configuração local está em [`docker-compose.yml`](../docker-compose.yml). Ela usa uma rede Docker interna, publica apenas o web no loopback, executa as migrações antes da API e inclui a limpeza diária. O [workflow de deploy](../.github/workflows/deploy.yml) está preparado, mas a implantação real ainda depende de domínio, VPS e credenciais; nenhum serviço foi publicado na internet.
+Publicado em **https://raiox.codehub.systems** (registro DNS `A` `raiox` apontando para a VPS). No Coolify:
 
-Quando houver domínio e VPS definidos:
+| Item | Valor |
+| --- | --- |
+| Projeto / ambiente | `Raio-X` / `production` |
+| Recurso | aplicação Docker Compose `raiox`, repositório `luis-hm/raioX` (branch `main`) pelo GitHub App `coolify-codehub` |
+| Compose | [`compose.coolify.yaml`](../compose.coolify.yaml): db, redis, migrate, api, worker, limpeza e web |
+| Domínio | só o serviço `web` (porta 3000, `EXPOSE` no `web/Dockerfile`); API, banco e Redis não têm porta publicada |
+| Variáveis | `POSTGRES_PASSWORD` e `RAIOX_RATE_SECRET`, geradas aleatoriamente e guardadas só no painel |
+| Deploy | automático a cada push na `main`; o `migrate` aplica o Alembic antes da API subir |
 
-1. Criar o registro DNS apontando para a VPS e clonar o repositório com a branch `main` ativa.
-2. Criar `.env` a partir de `.env.example`, substituindo todos os valores de exemplo por segredos fortes armazenados fora do repositório.
-3. Rodar `docker compose up -d --build`; o serviço `migrate` aplica Alembic antes de a API iniciar. Não é necessário rodar uma segunda migração manual.
-4. Configurar o proxy reverso externo para encaminhar o domínio ao web em `127.0.0.1:${WEB_PORT:-3000}`. O Next encaminha `/api` para a API dentro da rede Docker.
-5. Cadastrar no GitHub Actions os secrets `VPS_HOST` (nome DNS ou IPv4 da VPS), `VPS_USER` (usuário SSH), `VPS_SSH_PRIVATE_KEY` (chave privada dedicada ao deploy) e `VPS_KNOWN_HOSTS` (linha de `known_hosts` com a chave pública do host, cuja fingerprint foi conferida por canal independente). Cadastrar a variable `VPS_DEPLOY_PATH` com o caminho absoluto do clone na VPS, sem espaços nem `..`. O usuário SSH precisa ter acesso ao clone, permissão para atualizar a branch `main` por fast-forward e executar Docker Compose. A VPS precisa de Git, Docker com Compose, acesso ao remoto `origin` e do `.env` local configurado. Não colocar esses valores no repositório.
-6. Após preparar a infraestrutura, o workflow dispara em push na `main` ou manualmente por `workflow_dispatch`, com apenas um deploy por vez. Ele falha com indicação da configuração ausente, usa SSH com verificação estrita da chave do host e executa no clone somente `git pull --ff-only origin main` e `docker compose up -d --build`. O serviço `migrate` do Compose aplica Alembic; não há migração manual. A execução real do workflow e o acesso à VPS ainda não foram testados.
-7. A limpeza já é executada pelo serviço `limpeza` ao iniciar e a cada 24 horas; confirmar no ambiente real que o serviço permanece ativo.
+Em produção, `RAIOX_CONFIAR_PROXY=1` faz o rate limit usar o IP do visitante, repassado pelo proxy do Next a partir do último valor do
+`X-Forwarded-For`; sem isso, todos os visitantes dividiriam o limite do IP do container web. Os volumes `postgres_data`, `redis_data` e
+`uploads` persistem entre deploys. O workflow `.github/workflows/deploy.yml` (deploy por SSH) fica como alternativa: só roda se a
+variable `VPS_DEPLOY_PATH` existir e, sem ela, o job é pulado. Para o ambiente local continua valendo [`docker-compose.yml`](../docker-compose.yml).
 
 **Recursos.** Cada B1 tem 300 árvores; cada B2/P tem 76.101 parâmetros. São cinco conjuntos de três modelos, então medir memória e tempo de classificação dos até 500 fluxos principais na VPS antes de fixar timeout e concorrência. O raio-X explica uma semente por requisição, sem executar oclusão nas cinco simultaneamente. Os tempos do relatório foram medidos em CPU compartilhada do Colab e não dimensionam a VPS. O limite de 200 MB do site é uma escolha operacional: o experimento leu capturas maiores, chegando em um caso ao limite de 3 milhões de pacotes.
 
@@ -344,6 +348,6 @@ Para usar localmente: `cp .env.example .env`, substitua a senha e o segredo de e
 **Pendências que exigem decisão, dado ou ambiente externo**
 
 - Validar a leitura com PCAPs originais do trabalho e uma captura própria do Wireshark: esses arquivos não vieram no ZIP; é preciso fornecê-los, com autorização para análise.
-- Implantar na VPS e configurar DNS/proxy: faltam confirmar o host e o subdomínio, preparar o servidor e cadastrar secrets/variable do GitHub Actions. O Docker Compose e o workflow estão apenas preparados localmente; nenhum deploy foi executado.
+- [x] Implantação: publicada no Coolify em https://raiox.codehub.systems (ver “Deploy no Coolify”).
 - Revisar visualmente em 390/1440 px, aferir animação e gravar o GIF: o `agent-browser` não iniciou neste sandbox; a validação visual e o artefato continuam pendentes.
 - Executar a comparação 10% × 100%: o protocolo foi aprovado e o runner está pronto, mas faltam os arquivos processados do experimento (`dados_processados/dataset.npz`, `splits.npz`, `meta.csv`) e os encoders de pré-treino; os resultados publicados não serão substituídos.

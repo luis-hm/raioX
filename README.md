@@ -100,8 +100,7 @@ cd web && npm run typecheck             # tipos do frontend
 ## Estado do projeto e resultados
 
 O pipeline, a API, os containers, o experimento refeito e as telas estão implementados e verificados localmente.
-**A implantação externa ainda não foi executada:** domínio, VPS e proxy não foram validados. O workflow `.github/workflows/deploy.yml` está pronto e
-depende dos secrets `VPS_HOST`, `VPS_USER`, `VPS_SSH_PRIVATE_KEY` e `VPS_KNOWN_HOSTS` e da variable `VPS_DEPLOY_PATH`.
+**No ar em [https://raiox.codehub.systems](https://raiox.codehub.systems)**: a implantação externa é feita pelo Coolify a partir de [`compose.coolify.yaml`](compose.coolify.yaml), com deploy automático a cada push na `main` (detalhes em `docs/SISTEMA.md`). O workflow `.github/workflows/deploy.yml`, por SSH, é opcional e só roda com os secrets `VPS_HOST`, `VPS_USER`, `VPS_SSH_PRIVATE_KEY` e `VPS_KNOWN_HOSTS` e a variable `VPS_DEPLOY_PATH` cadastrados.
 
 **Resultado da execução refeita** (250 execuções, 5 sementes, teste *t* pareado com Holm; detalhes em `/resultados`):
 
