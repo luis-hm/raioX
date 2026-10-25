@@ -3,8 +3,8 @@ import { toRibbonFlows } from "./flow-adapters";
 
 export const MAP_FLOW_LIMIT = 500;
 
-/** At most five sequential pages. An aborted/failed page never becomes a partial map. */
-export async function loadFlowMap(id: string,
+/** At most five sequential pages. An aborted/failed page never becomes a partial list. */
+export async function loadFlows(id: string,
   filters: Pick<FiltrosFluxos, "semente" | "modelo" | "classe" | "discordam">, signal: AbortSignal) {
   const flows: FluxoTabela[] = [];
   const numbers = new Set<number>();
@@ -28,5 +28,11 @@ export async function loadFlowMap(id: string,
     }
     if (flows.length >= Math.min(total, MAP_FLOW_LIMIT)) break;
   }
-  return { ...toRibbonFlows(flows), loaded: flows.length, total, notLoaded: Math.max(0, total - flows.length) };
+  return { flows, total, notLoaded: Math.max(0, total - flows.length) };
+}
+
+export async function loadFlowMap(id: string,
+  filters: Pick<FiltrosFluxos, "semente" | "modelo" | "classe" | "discordam">, signal: AbortSignal) {
+  const { flows, total, notLoaded } = await loadFlows(id, filters, signal);
+  return { ...toRibbonFlows(flows), loaded: flows.length, total, notLoaded };
 }
